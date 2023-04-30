@@ -1,7 +1,7 @@
 import React from 'react';
 import { RouteObject } from 'react-router-dom';
-import Home from '../pages/Home';
-import Mindmap from '../pages/Mindmap';
+import Home from '@/pages/Home';
+import Mindmap from '@/pages/Mindmap';
 
 const routes: RouteObject[] = [
   {

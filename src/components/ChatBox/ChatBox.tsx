@@ -1,42 +1,59 @@
 import React, { useState } from 'react';
-import { Widget } from 'react-chat-widget';
+import styled from 'styled-components';
 
 import 'react-chat-widget/lib/styles.css';
+
+const ChatBoxToggleButton = styled.button`
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: white;
+  border: 1px solid black;
+  z-index: 1000;
+  cursor: pointer;
+
+  transition: 0.2s;
+
+  // if chatbox is shown, smaller button
+  &.active {
+    width: 60px;
+    height: 60px;
+  }
+`;
+
+const ChatBoxContainer = styled.div`
+  position: absolute;
+  bottom: 90px;
+  right: 20px;
+  width: 400px;
+  height: 80vh;
+  background-color: white;
+  border: 1px solid black;
+  z-index: 1000;
+
+  transition: 0.2s;
+
+  &.active {
+    width: 0px;
+    height: 0px;
+    opacity: 0;
+  }
+`;
 
 const ChatBox = () => {
   const [showChat, setShowChat] = useState(false);
   return (
     <div>
-      {showChat && (
-        <div
-          style={{
-            position: 'absolute',
-            bottom: '95px',
-            right: '20px',
-            width: '400px',
-            height: '80vh',
-            backgroundColor: 'white',
-            border: '1px solid black',
-            zIndex: 1000,
-          }}
-        ></div>
-      )}
-      <button
-        style={{
-          position: 'absolute',
-          bottom: '20px',
-          right: '20px',
-          width: '70px',
-          height: '70px',
-          backgroundColor: 'white',
-          border: '1px solid black',
-          zIndex: 1000,
-          cursor: 'pointer',
-        }}
+      <ChatBoxContainer className={showChat ? 'active' : ''}></ChatBoxContainer>
+      <ChatBoxToggleButton
         onClick={() => setShowChat(!showChat)}
+        className={showChat ? 'active' : ''}
       >
         💬
-      </button>
+      </ChatBoxToggleButton>
     </div>
   );
 };

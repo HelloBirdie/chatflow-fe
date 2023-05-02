@@ -1,23 +1,22 @@
 import React from 'react';
-import { Widget } from 'react-chat-widget';
 
-const ChatBox = () => {
+const MindMapHeaderBar = () => {
   return (
     <div
       style={{
         position: 'absolute',
-        top: '60px',
-        right: '20px',
-        width: '400px',
-        height: '70vh',
+        top: '0px',
+        left: '0px',
+        width: '100vw',
+        height: '60px',
         backgroundColor: 'white',
         border: '1px solid black',
         zIndex: 1000,
       }}
     >
-      <Widget />
+      MindMapHeaderBar
     </div>
   );
 };
 
-export default ChatBox;
+export default MindMapHeaderBar;

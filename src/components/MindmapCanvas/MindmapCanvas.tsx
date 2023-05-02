@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import ReactFlow, {
   useNodesState,
   useEdgesState,
@@ -6,6 +6,7 @@ import ReactFlow, {
   MiniMap,
   Controls,
   Background,
+  ControlButton,
 } from 'reactflow';
 
 import 'reactflow/dist/style.css';
@@ -30,6 +31,7 @@ const proOptions = { hideAttribution: true };
 const MindmapCanvas = () => {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+  const [showMiniMap, setShowMiniMap] = useState(false);
 
   const onConnect = useCallback(
     (params: any) => setEdges((eds) => addEdge(params, eds)),
@@ -46,8 +48,24 @@ const MindmapCanvas = () => {
         onConnect={onConnect}
         proOptions={proOptions}
       >
-        <Controls />
-        <MiniMap />
+        <Controls style={{ display: 'flex' }}>
+          <ControlButton
+            onClick={() => setShowMiniMap(!showMiniMap)}
+            title="Mini Map"
+          >
+            <div>🗺️</div>
+          </ControlButton>
+        </Controls>
+        {showMiniMap && (
+          <MiniMap
+            position="bottom-left"
+            style={{
+              position: 'absolute',
+              left: '0px',
+              bottom: '30px',
+            }}
+          />
+        )}
         <Background variant={BackgroundVariant.Dots} gap={12} size={1} />
       </ReactFlow>
     </div>

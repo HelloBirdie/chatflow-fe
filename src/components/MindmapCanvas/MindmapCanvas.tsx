@@ -48,7 +48,7 @@ const MindmapCanvas = () => {
         onConnect={onConnect}
         proOptions={proOptions}
       >
-        <Controls style={{ display: 'flex', bottom: '20px' }}>
+        <Controls style={{ display: 'flex', bottom: '10px' }}>
           <ControlButton
             onClick={() => setShowMiniMap(!showMiniMap)}
             title="Mini Map"
@@ -62,7 +62,7 @@ const MindmapCanvas = () => {
             style={{
               position: 'absolute',
               left: '0px',
-              bottom: '50px',
+              bottom: '40px',
             }}
           />
         )}

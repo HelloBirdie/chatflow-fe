@@ -1,6 +1,7 @@
 import React from 'react';
 import MindmapCanvas from '@/components/MindmapCanvas/MindmapCanvas';
 import ChatBox from '../../components/ChatBox/ChatBox';
+
 import MindMapHeaderBar from '../../components/MindMapHeaderBar/MindMapHeaderBar';
 
 const Mindmap = () => {

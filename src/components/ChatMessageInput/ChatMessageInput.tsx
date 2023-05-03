@@ -29,11 +29,13 @@ const ChatMessageInput = () => {
           maxRows={8}
           minRows={1}
           bg={'gray.100'}
+          transition="height none"
           variant={'none'}
           resize={'none'}
           placeholder="Type your message here..."
           value={message}
           onChange={handleMessageChange}
+          cacheMeasurements={true}
           as={ResizeTextarea}
         />
         <IconButton

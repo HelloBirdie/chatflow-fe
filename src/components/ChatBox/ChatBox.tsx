@@ -21,12 +21,13 @@ const ChatBoxToggleButton = styled.button`
   // add the surrounding shadow
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.213);
 
-  transition: 0.2s;
+  transition: all 0.2s ease-in-out;
 
   // if chatbox is shown, smaller button
   &.active {
-    width: 60px;
-    height: 60px;
+    /* width: 60px;
+    height: 60px; */
+    transform: scale(1.15);
   }
 `;
 
@@ -45,7 +46,9 @@ const ChatBoxContainer = styled.div`
 
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.213);
 
-  transition: 0.2s;
+  /* transition: 0.2s; */
+
+  transition: all 0.2s ease-in-out;
 
   &.active {
     width: 0px;

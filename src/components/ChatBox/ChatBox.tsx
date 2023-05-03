@@ -1,7 +1,12 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { Icon } from '@chakra-ui/react';
+
+import { RiChat3Line } from 'react-icons/ri';
 
 import 'react-chat-widget/lib/styles.css';
+import ChatMessageContainer from '../ChatMessageContainer/ChatMessageContainer';
+import ChatMessageInput from '../ChatMessageInput/ChatMessageInput';
 
 const ChatBoxToggleButton = styled.button`
   position: absolute;
@@ -11,30 +16,46 @@ const ChatBoxToggleButton = styled.button`
   height: 50px;
   border-radius: 50%;
   background-color: white;
-  border: 1px solid black;
   z-index: 1000;
   cursor: pointer;
 
-  transition: 0.2s;
+  border: 0px;
+
+  // add the surrounding shadow
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.213);
+
+  transition: all 0.2s ease-in-out;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   // if chatbox is shown, smaller button
   &.active {
-    width: 60px;
-    height: 60px;
+    /* width: 60px;
+    height: 60px; */
+    transform: scale(1.15);
   }
 `;
 
 const ChatBoxContainer = styled.div`
   position: absolute;
+  display: flex;
+  flex-direction: column;
   bottom: 90px;
   right: 20px;
   width: 400px;
   height: 80vh;
   background-color: white;
-  border: 1px solid black;
   z-index: 1000;
+  border-radius: 12px;
+  overflow: hidden;
 
-  transition: 0.2s;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.213);
+
+  /* transition: 0.2s; */
+
+  transition: all 0.2s ease-in-out;
 
   &.active {
     width: 0px;
@@ -43,16 +64,36 @@ const ChatBoxContainer = styled.div`
   }
 `;
 
+const ChatMessageInputContainer = styled.div`
+  bottom: 0px;
+  left: 0px;
+  width: 100%;
+  border-top: 1px solid rgba(0, 0, 0, 0.213);
+`;
+
+const ChatMessageContainerContainer = styled.div`
+  flex: 1;
+  overflow-y: scroll;
+`;
+
 const ChatBox = () => {
   const [showChat, setShowChat] = useState(false);
   return (
     <div>
-      <ChatBoxContainer className={showChat ? 'active' : ''}></ChatBoxContainer>
+      <ChatBoxContainer className={showChat ? 'active' : ''}>
+        <ChatMessageContainerContainer>
+          <ChatMessageContainer />
+        </ChatMessageContainerContainer>
+
+        <ChatMessageInputContainer>
+          <ChatMessageInput />
+        </ChatMessageInputContainer>
+      </ChatBoxContainer>
       <ChatBoxToggleButton
         onClick={() => setShowChat(!showChat)}
         className={showChat ? 'active' : ''}
       >
-        💬
+        <Icon as={RiChat3Line} w={6} h={6} />
       </ChatBoxToggleButton>
     </div>
   );

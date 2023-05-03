@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { Icon } from '@chakra-ui/react';
+
+import { RiChat3Line } from 'react-icons/ri';
 
 import 'react-chat-widget/lib/styles.css';
 import ChatMessageContainer from '../ChatMessageContainer/ChatMessageContainer';
@@ -22,6 +25,10 @@ const ChatBoxToggleButton = styled.button`
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.213);
 
   transition: all 0.2s ease-in-out;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   // if chatbox is shown, smaller button
   &.active {
@@ -86,7 +93,7 @@ const ChatBox = () => {
         onClick={() => setShowChat(!showChat)}
         className={showChat ? 'active' : ''}
       >
-        💬
+        <Icon as={RiChat3Line} w={6} h={6} />
       </ChatBoxToggleButton>
     </div>
   );

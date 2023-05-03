@@ -1,12 +1,5 @@
 import React, { useRef, useState } from 'react';
-import {
-  Flex,
-  Textarea,
-  InputGroup,
-  IconButton,
-  Icon,
-  Spacer,
-} from '@chakra-ui/react';
+import { Flex, Textarea, InputGroup, IconButton, Icon } from '@chakra-ui/react';
 
 import ResizeTextarea from 'react-textarea-autosize';
 
@@ -34,6 +27,7 @@ const ChatMessageInput = () => {
           mr={1}
           ref={textareaRef}
           maxRows={8}
+          minRows={1}
           bg={'gray.100'}
           variant={'none'}
           resize={'none'}

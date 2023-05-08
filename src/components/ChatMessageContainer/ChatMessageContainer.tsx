@@ -17,7 +17,7 @@ const ChatMessageContainer = () => {
   }, []);
 
   return (
-    <Container height={'100%'} overflow={'scroll'}>
+    <Container height={'100%'} overflow={'scroll'} paddingTop={'10px'}>
       {conversationPairs.map((conversationPair: IConversationPair) => {
         return (
           <ConversationPair

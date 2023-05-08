@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import ReactFlow, {
   useNodesState,
   useEdgesState,
@@ -10,6 +10,7 @@ import ReactFlow, {
 } from 'reactflow';
 
 import 'reactflow/dist/style.css';
+import MindmapNode from '../MindmapNode/MindmapNode';
 
 enum BackgroundVariant {
   Lines = 'lines',
@@ -18,10 +19,30 @@ enum BackgroundVariant {
 }
 
 const initialNodes = [
-  { id: '1', position: { x: 0, y: 0 }, data: { label: '1' } },
-  { id: '2', position: { x: 0, y: 100 }, data: { label: '2' } },
-  { id: '3', position: { x: 100, y: 100 }, data: { label: '3' } },
-  { id: '4', position: { x: 200, y: 100 }, data: { label: '4' } },
+  {
+    id: '1',
+    type: 'mindmapNode',
+    position: { x: 0, y: 0 },
+    data: { conversationPairId: 1, userMessage: 'Hello', aiMessage: 'Hi' },
+  },
+  {
+    id: '2',
+    type: 'mindmapNode',
+    position: { x: 0, y: 100 },
+    data: { conversationPairId: 1, userMessage: 'Hello', aiMessage: 'Hi' },
+  },
+  {
+    id: '3',
+    type: 'mindmapNode',
+    position: { x: 100, y: 100 },
+    data: { conversationPairId: 1, userMessage: 'Hello', aiMessage: 'Hi' },
+  },
+  {
+    id: '4',
+    type: 'mindmapNode',
+    position: { x: 200, y: 100 },
+    data: { conversationPairId: 1, userMessage: 'Hello', aiMessage: 'Hi' },
+  },
 ];
 
 const initialEdges = [{ id: 'e1-2', source: '1', target: '2' }];
@@ -32,6 +53,8 @@ const MindmapCanvas = () => {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
   const [showMiniMap, setShowMiniMap] = useState(false);
+
+  const nodeTypes = useMemo(() => ({ mindmapNode: MindmapNode }), []);
 
   const onConnect = useCallback(
     (params: any) => setEdges((eds) => addEdge(params, eds)),
@@ -47,6 +70,7 @@ const MindmapCanvas = () => {
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
         proOptions={proOptions}
+        nodeTypes={nodeTypes}
       >
         <Controls style={{ display: 'flex', bottom: '10px' }}>
           <ControlButton

@@ -72,7 +72,7 @@ const ChatMessageInputContainer = styled.div`
 `;
 
 const ChatMessageContainerContainer = styled.div`
-  flex: 1;
+  flex-grow: 1;
   overflow-y: scroll;
 `;
 

@@ -1,6 +1,7 @@
 import React from 'react';
 import ChatMessage from '../ChatMessage/ChatMessage';
 import { IConversationPair } from '@/interfaces/conversationPair';
+import { useDraggable } from '@dnd-kit/core';
 import styled from 'styled-components';
 import DragGrip from '../DragGrip/DragGrip';
 
@@ -9,6 +10,7 @@ const CustomContainer = styled.div`
   padding: 10px 10px;
   border-radius: 8px;
   transition: all 0.2s ease-in-out;
+  cursor: default;
 
   .drag-grip-wrapper {
     cursor: grab;
@@ -55,6 +57,18 @@ const ConversationPair = (props: IConversationPairProps) => {
   const { userMessage, aiMessage } = conversationPair;
   const [isConversationHovered, setIsConversationHovered] =
     React.useState<boolean>(false);
+
+  const { attributes, listeners, setNodeRef, transform } = useDraggable({
+    id: conversationPair.id,
+  });
+  const style = transform
+    ? {
+        // transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
+        opacity: 0.5,
+        backgroundColor: '#f3f3f3',
+      }
+    : undefined;
+
   return (
     <CustomContainer
       onMouseEnter={() => {
@@ -63,9 +77,13 @@ const ConversationPair = (props: IConversationPairProps) => {
       onMouseLeave={() => {
         setIsConversationHovered(false);
       }}
+      ref={setNodeRef}
+      style={style}
     >
       <div
         className={`drag-grip-wrapper ${isConversationHovered ? 'shown' : ''}`}
+        {...listeners}
+        {...attributes}
       >
         <DragGrip />
       </div>

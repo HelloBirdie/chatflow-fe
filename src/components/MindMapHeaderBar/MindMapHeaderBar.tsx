@@ -11,7 +11,7 @@ const MindMapHeaderBar = () => {
         height: '60px',
         backgroundColor: 'white',
         border: '1px solid black',
-        zIndex: 1000,
+        zIndex: 1001,
       }}
     >
       MindMapHeaderBar

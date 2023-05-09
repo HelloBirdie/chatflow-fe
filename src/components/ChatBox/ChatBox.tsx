@@ -74,6 +74,8 @@ const ChatMessageInputContainer = styled.div`
 const ChatMessageContainerContainer = styled.div`
   flex-grow: 1;
   overflow-y: scroll;
+  overflow-x: hidden;
+  width: 100%;
 `;
 
 const ChatBox = () => {

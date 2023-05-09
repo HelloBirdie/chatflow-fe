@@ -5,6 +5,9 @@ const NodeContainer = styled.div`
   border: 1px solid black;
   padding: 10px;
   border-radius: 8px;
+  :hover {
+    background-color: #e8e8e8;
+  }
 `;
 
 interface MindmapNodeProps {

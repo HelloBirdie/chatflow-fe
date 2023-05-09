@@ -53,17 +53,20 @@ interface IConversationPairProps {
 const ConversationPair = (props: IConversationPairProps) => {
   const { conversationPair } = props;
   const { userMessage, aiMessage } = conversationPair;
-  const [isHovered, setIsHovered] = React.useState<boolean>(false);
+  const [isConversationHovered, setIsConversationHovered] =
+    React.useState<boolean>(false);
   return (
     <CustomContainer
       onMouseEnter={() => {
-        setIsHovered(true);
+        setIsConversationHovered(true);
       }}
       onMouseLeave={() => {
-        setIsHovered(false);
+        setIsConversationHovered(false);
       }}
     >
-      <div className={`drag-grip-wrapper ${isHovered ? 'shown' : ''}`}>
+      <div
+        className={`drag-grip-wrapper ${isConversationHovered ? 'shown' : ''}`}
+      >
         <DragGrip />
       </div>
       <ChatMessage content={userMessage.content} isUser={true} />

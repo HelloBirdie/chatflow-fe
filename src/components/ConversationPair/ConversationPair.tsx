@@ -11,10 +11,22 @@ const CustomContainer = styled.div`
   transition: all 0.2s ease-in-out;
 
   .drag-grip-wrapper {
+    cursor: grab;
+    position: absolute;
+    top: 5px;
+    padding: 5px 3px;
+    border-radius: 3px;
     transition: all 0.2s ease-in-out;
     opacity: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     &.shown {
       opacity: 1;
+    }
+
+    :hover {
+      background-color: #d4d4d4;
     }
   }
   .message {
@@ -30,7 +42,7 @@ const CustomContainer = styled.div`
   }
 
   :hover {
-    background-color: #ededed;
+    background-color: #f3f3f3;
   }
 `;
 
@@ -52,7 +64,7 @@ const ConversationPair = (props: IConversationPairProps) => {
       }}
     >
       <div className={`drag-grip-wrapper ${isHovered ? 'shown' : ''}`}>
-        <DragGrip position={{ top: '10px', left: '10px' }} />
+        <DragGrip />
       </div>
       <ChatMessage content={userMessage.content} isUser={true} />
       <ChatMessage content={aiMessage.content} isUser={false} />

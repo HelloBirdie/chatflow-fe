@@ -11,7 +11,14 @@ const Mindmap = () => {
   const [isDragging, setIsDragging] = useState(false);
 
   return (
-    <div>
+    <div
+      style={{
+        overflow: 'hidden',
+        height: '100vh',
+        width: '100vw',
+        position: 'relative',
+      }}
+    >
       <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
         <DragOverlay
           style={{

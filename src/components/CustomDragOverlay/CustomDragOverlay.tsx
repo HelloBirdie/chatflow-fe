@@ -1,5 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
+import ConversationPair from '../ConversationPair/ConversationPair';
+import { IConversationPair } from '@/interfaces/conversationPair';
 
 const Wrapper = styled.div`
   position: absolute;
@@ -9,11 +11,22 @@ const Wrapper = styled.div`
   padding: 10px;
 `;
 
-const CustomDragOverlay = () => {
+interface ICustomDragOverlayProps {
+  conversationPair: IConversationPair | null;
+}
+
+const CustomDragOverlay = ({ conversationPair }: ICustomDragOverlayProps) => {
+  if (!conversationPair) {
+    return null;
+  }
+
+  const { userMessage, aiMessage } = conversationPair;
+  const userMessageContent = userMessage.content;
+  const aiMessageContent = aiMessage.content;
   return (
     <Wrapper>
-      <div>Question: </div>
-      <div>Answer: </div>
+      <div>Question: {userMessageContent}</div>
+      <div>Answer: {aiMessageContent}</div>
     </Wrapper>
   );
 };

@@ -60,6 +60,7 @@ const ConversationPair = (props: IConversationPairProps) => {
 
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
     id: conversationPair.id,
+    data: { conversationPair },
   });
   const style = transform
     ? {

@@ -19,7 +19,6 @@ interface MindmapNodeProps {
 }
 
 const MindmapNode = ({ data }: MindmapNodeProps) => {
-  console.log(data);
   return (
     <NodeContainer>
       <p>{data.userMessage}</p>

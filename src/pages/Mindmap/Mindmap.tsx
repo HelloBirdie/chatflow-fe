@@ -6,9 +6,12 @@ import { restrictToWindowEdges } from '@dnd-kit/modifiers';
 import CustomDragOverlay from '@/components/CustomDragOverlay/CustomDragOverlay';
 
 import MindMapHeaderBar from '../../components/MindMapHeaderBar/MindMapHeaderBar';
+import { IConversationPair } from '@/interfaces/conversationPair';
 
 const Mindmap = () => {
   const [isDragging, setIsDragging] = useState(false);
+  const [draggingConversationPair, setDraggingConversationPair] =
+    useState<IConversationPair | null>(null);
 
   return (
     <div
@@ -27,7 +30,9 @@ const Mindmap = () => {
           }}
           modifiers={[restrictToWindowEdges]}
         >
-          {isDragging ? <CustomDragOverlay /> : null}
+          {isDragging ? (
+            <CustomDragOverlay conversationPair={draggingConversationPair} />
+          ) : null}
         </DragOverlay>
         <MindMapHeaderBar />
         <ChatBox />
@@ -35,11 +40,14 @@ const Mindmap = () => {
       </DndContext>
     </div>
   );
-  function handleDragStart() {
+  function handleDragStart(e: any) {
+    const { conversationPair } = e.active.data.current;
+    setDraggingConversationPair(conversationPair);
     setIsDragging(true);
   }
 
-  function handleDragEnd() {
+  function handleDragEnd(e: any) {
+    console.log(e);
     setIsDragging(false);
   }
 };

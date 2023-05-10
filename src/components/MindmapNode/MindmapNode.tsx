@@ -1,11 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useDroppable } from '@dnd-kit/core';
 
 const NodeContainer = styled.div`
   border: 1px solid black;
   padding: 10px;
   border-radius: 8px;
-  :hover {
+  &.mindmap-node-drag-hovered {
     background-color: #e8e8e8;
   }
 `;
@@ -19,8 +20,16 @@ interface MindmapNodeProps {
 }
 
 const MindmapNode = ({ data }: MindmapNodeProps) => {
+  const { isOver, setNodeRef } = useDroppable({
+    id: 'mindmap-node-' + data.conversationPairId,
+    data: { data },
+  });
+
   return (
-    <NodeContainer>
+    <NodeContainer
+      ref={setNodeRef}
+      className={isOver ? 'mindmap-node-drag-hovered' : ''}
+    >
       <p>{data.userMessage}</p>
       <hr />
       <p>{data.aiMessage}</p>

@@ -74,16 +74,8 @@ const Mindmap = () => {
       windowX: xSource + xOffset,
       windowY: ySource + yOffset,
     };
-    // // TODO: debounce
-    // if (topElement) {
-    //   console.log('Element at (' + windowX + ',' + windowY + '):', topElement);
-    // } else {
-    //   console.log('No element at (' + windowX + ',' + windowY + ')');
-    // }
-    // const { id: overId } = e.over;
-    // console.log(overId);
 
-    // console.log(chatBoxRef.current?.getBoundingClientRect());
+    console.log(e.over);
 
     const { chatBoxTop, chatBoxBottom, chatBoxLeft, chatBoxRight } = {
       chatBoxTop: chatBoxRef.current?.getBoundingClientRect().top,
@@ -100,11 +92,13 @@ const Mindmap = () => {
       windowY > chatBoxTop &&
       windowY < chatBoxBottom
     ) {
-      console.log('In chat box');
-      setInChatBox(true);
+      if (!inChatBox) {
+        setInChatBox(true);
+      }
     } else {
-      console.log('Not in chat box');
-      setInChatBox(false);
+      if (inChatBox) {
+        setInChatBox(false);
+      }
     }
   }
 };

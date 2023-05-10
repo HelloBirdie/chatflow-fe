@@ -31,19 +31,19 @@ const initialNodes = [
     id: '2',
     type: 'mindmapNode',
     position: { x: 0, y: 100 },
-    data: { conversationPairId: 1, userMessage: 'Hello', aiMessage: 'Hi' },
+    data: { conversationPairId: 2, userMessage: 'Hello', aiMessage: 'Hi' },
   },
   {
     id: '3',
     type: 'mindmapNode',
     position: { x: 100, y: 100 },
-    data: { conversationPairId: 1, userMessage: 'Hello', aiMessage: 'Hi' },
+    data: { conversationPairId: 3, userMessage: 'Hello', aiMessage: 'Hi' },
   },
   {
     id: '4',
     type: 'mindmapNode',
     position: { x: 200, y: 100 },
-    data: { conversationPairId: 1, userMessage: 'Hello', aiMessage: 'Hi' },
+    data: { conversationPairId: 4, userMessage: 'Hello', aiMessage: 'Hi' },
   },
 ];
 

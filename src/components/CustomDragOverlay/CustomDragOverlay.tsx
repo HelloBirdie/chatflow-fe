@@ -9,13 +9,21 @@ const Wrapper = styled.div`
   border: 1px solid black;
   border-radius: 8px;
   padding: 10px;
+
+  &.not-in-chatbox {
+    border: 3px solid red;
+  }
 `;
 
 interface ICustomDragOverlayProps {
   conversationPair: IConversationPair | null;
+  inChatBox: boolean;
 }
 
-const CustomDragOverlay = ({ conversationPair }: ICustomDragOverlayProps) => {
+const CustomDragOverlay = ({
+  conversationPair,
+  inChatBox,
+}: ICustomDragOverlayProps) => {
   if (!conversationPair) {
     return null;
   }
@@ -24,9 +32,10 @@ const CustomDragOverlay = ({ conversationPair }: ICustomDragOverlayProps) => {
   const userMessageContent = userMessage.content;
   const aiMessageContent = aiMessage.content;
   return (
-    <Wrapper>
+    <Wrapper className={inChatBox ? '' : 'not-in-chatbox'}>
       <div>Question: {userMessageContent}</div>
       <div>Answer: {aiMessageContent}</div>
+      {!inChatBox ? <div>Add to mindmap</div> : null}
     </Wrapper>
   );
 };

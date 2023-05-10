@@ -9,6 +9,8 @@ import ReactFlow, {
   ControlButton,
 } from 'reactflow';
 
+import { useDroppable } from '@dnd-kit/core';
+
 import 'reactflow/dist/style.css';
 import MindmapNode from '../MindmapNode/MindmapNode';
 
@@ -61,8 +63,12 @@ const MindmapCanvas = () => {
     [setEdges],
   );
 
+  const { setNodeRef } = useDroppable({
+    id: 'mindmapCanvas',
+  });
+
   return (
-    <div style={{ width: '100vw', height: '100vh' }}>
+    <div style={{ width: '100vw', height: '100vh' }} ref={setNodeRef}>
       <ReactFlow
         nodes={nodes}
         edges={edges}

@@ -3,6 +3,7 @@ import MindmapCanvas from '@/components/MindmapCanvas/MindmapCanvas';
 import ChatBox from '../../components/ChatBox/ChatBox';
 import { DndContext, DragOverlay } from '@dnd-kit/core';
 import { restrictToWindowEdges } from '@dnd-kit/modifiers';
+import _ from 'lodash';
 import CustomDragOverlay from '@/components/CustomDragOverlay/CustomDragOverlay';
 
 import MindMapHeaderBar from '../../components/MindMapHeaderBar/MindMapHeaderBar';
@@ -12,6 +13,8 @@ const Mindmap = () => {
   const [isDragging, setIsDragging] = useState(false);
   const [draggingConversationPair, setDraggingConversationPair] =
     useState<IConversationPair | null>(null);
+
+  const debouncedHandleDragMove = _.debounce(handleDragMove, 15);
 
   const [inChatBox, setInChatBox] = useState(true);
 
@@ -29,13 +32,12 @@ const Mindmap = () => {
       <DndContext
         onDragStart={handleDragStart}
         onDragEnd={handleDragEnd}
-        onDragMove={handleDragMove}
+        onDragMove={debouncedHandleDragMove}
       >
         <DragOverlay
           style={{
             position: 'absolute',
             zIndex: 2000,
-            cursor: 'grabbing',
           }}
           modifiers={[restrictToWindowEdges]}
         >

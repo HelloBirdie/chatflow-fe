@@ -4,3 +4,8 @@ export interface IMessage {
   sender: string;
   timestamp: string;
 }
+
+export interface IMessageSlim {
+  id: number;
+  content: string;
+}

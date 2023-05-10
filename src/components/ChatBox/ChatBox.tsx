@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { forwardRef, useState } from 'react';
 import styled from 'styled-components';
 import { Icon } from '@chakra-ui/react';
 
@@ -74,13 +74,16 @@ const ChatMessageInputContainer = styled.div`
 const ChatMessageContainerContainer = styled.div`
   flex-grow: 1;
   overflow-y: scroll;
+  overflow-x: hidden;
+  width: 100%;
 `;
 
-const ChatBox = () => {
+const ChatBox = forwardRef((props: any, ref: any) => {
   const [showChat, setShowChat] = useState(false);
+
   return (
     <div>
-      <ChatBoxContainer className={showChat ? 'active' : ''}>
+      <ChatBoxContainer className={showChat ? 'active' : ''} ref={ref}>
         <ChatMessageContainerContainer>
           <ChatMessageContainer />
         </ChatMessageContainerContainer>
@@ -97,6 +100,9 @@ const ChatBox = () => {
       </ChatBoxToggleButton>
     </div>
   );
-};
+});
+
+// add display name for debugging purposes
+ChatBox.displayName = 'ChatBox';
 
 export default ChatBox;

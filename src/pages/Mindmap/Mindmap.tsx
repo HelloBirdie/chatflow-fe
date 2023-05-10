@@ -75,8 +75,6 @@ const Mindmap = () => {
       windowY: ySource + yOffset,
     };
 
-    console.log(e.over);
-
     const { chatBoxTop, chatBoxBottom, chatBoxLeft, chatBoxRight } = {
       chatBoxTop: chatBoxRef.current?.getBoundingClientRect().top,
       chatBoxBottom: chatBoxRef.current?.getBoundingClientRect().bottom,

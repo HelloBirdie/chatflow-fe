@@ -21,14 +21,14 @@ enum BackgroundVariant {
   Cross = 'cross',
 }
 
-const initialEdges = [{ id: 'e1-2', source: '1', target: '2' }];
-
 const proOptions = { hideAttribution: true };
 
 const MindmapCanvas = () => {
   const reduxNodes = useSelector((state: any) => state.nodes.nodes);
+  const reduxEdges = useSelector((state: any) => state.edges.edges);
+  console.log(reduxEdges);
   const [nodes, setNodes, onNodesChange] = useNodesState(reduxNodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+  const [edges, setEdges, onEdgesChange] = useEdgesState(reduxEdges);
   const [showMiniMap, setShowMiniMap] = useState(false);
 
   const nodeTypes = useMemo(() => ({ mindmapNode: MindmapNode }), []);
@@ -45,6 +45,10 @@ const MindmapCanvas = () => {
   useEffect(() => {
     setNodes(reduxNodes);
   }, [reduxNodes]);
+
+  useEffect(() => {
+    setEdges(reduxEdges);
+  }, [reduxEdges]);
 
   return (
     <div style={{ width: '100vw', height: '100vh' }} ref={setNodeRef}>

@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useDroppable } from '@dnd-kit/core';
+import { Handle, Position } from 'reactflow';
 
 const NodeContainer = styled.div`
   border: 1px solid black;
@@ -17,6 +18,7 @@ interface MindmapNodeProps {
     conversationPairId: number;
     userMessage: string;
     aiMessage: string;
+    isParent: boolean;
   };
 }
 
@@ -31,9 +33,11 @@ const MindmapNode = ({ data }: MindmapNodeProps) => {
       ref={setNodeRef}
       className={isOver ? 'mindmap-node-drag-hovered' : ''}
     >
+      <Handle type="target" position={Position.Right} />
       <p>{data.userMessage}</p>
       <hr />
       <p>{data.aiMessage}</p>
+      <Handle type="source" position={Position.Left} />
     </NodeContainer>
   );
 };

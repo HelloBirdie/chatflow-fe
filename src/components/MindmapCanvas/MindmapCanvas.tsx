@@ -21,33 +21,6 @@ enum BackgroundVariant {
   Cross = 'cross',
 }
 
-// const initialNodes = [
-//   {
-//     id: '1',
-//     type: 'mindmapNode',
-//     position: { x: 0, y: 0 },
-//     data: { conversationPairId: 1, userMessage: 'Hello', aiMessage: 'Hi' },
-//   },
-//   {
-//     id: '2',
-//     type: 'mindmapNode',
-//     position: { x: 0, y: 100 },
-//     data: { conversationPairId: 2, userMessage: 'Hello', aiMessage: 'Hi' },
-//   },
-//   {
-//     id: '3',
-//     type: 'mindmapNode',
-//     position: { x: 100, y: 100 },
-//     data: { conversationPairId: 3, userMessage: 'Hello', aiMessage: 'Hi' },
-//   },
-//   {
-//     id: '4',
-//     type: 'mindmapNode',
-//     position: { x: 200, y: 100 },
-//     data: { conversationPairId: 4, userMessage: 'Hello', aiMessage: 'Hi' },
-//   },
-// ];
-
 const initialEdges = [{ id: 'e1-2', source: '1', target: '2' }];
 
 const proOptions = { hideAttribution: true };

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import MindmapCanvas from '@/components/MindmapCanvas/MindmapCanvas';
 import ChatBox from '../../components/ChatBox/ChatBox';
 import { DndContext, DragOverlay } from '@dnd-kit/core';
@@ -8,6 +8,36 @@ import CustomDragOverlay from '@/components/CustomDragOverlay/CustomDragOverlay'
 
 import MindMapHeaderBar from '../../components/MindMapHeaderBar/MindMapHeaderBar';
 import { IConversationPair } from '@/interfaces/conversationPair';
+import { useDispatch } from 'react-redux';
+import { setNodes } from '@/redux/actions/nodeActions';
+import { INode } from '@/interfaces/node';
+
+const initialNodes: INode[] = [
+  {
+    id: '1',
+    type: 'mindmapNode',
+    position: { x: 0, y: 0 },
+    data: { conversationPairId: 1, userMessage: 'Hello', aiMessage: 'Hi' },
+  },
+  {
+    id: '2',
+    type: 'mindmapNode',
+    position: { x: 0, y: 100 },
+    data: { conversationPairId: 2, userMessage: 'Hello', aiMessage: 'Hi' },
+  },
+  {
+    id: '3',
+    type: 'mindmapNode',
+    position: { x: 100, y: 100 },
+    data: { conversationPairId: 3, userMessage: 'Hello', aiMessage: 'Hi' },
+  },
+  {
+    id: '4',
+    type: 'mindmapNode',
+    position: { x: 200, y: 100 },
+    data: { conversationPairId: 4, userMessage: 'Hello', aiMessage: 'Hi' },
+  },
+];
 
 const Mindmap = () => {
   const [isDragging, setIsDragging] = useState(false);
@@ -19,6 +49,16 @@ const Mindmap = () => {
   const [inChatBox, setInChatBox] = useState(true);
 
   const chatBoxRef = React.useRef<HTMLDivElement>(null);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const fetchNodes = () => {
+      dispatch(setNodes(initialNodes));
+    };
+
+    fetchNodes();
+  }, []);
 
   return (
     <div

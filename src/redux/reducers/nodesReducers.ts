@@ -25,7 +25,7 @@ export function nodesReducer(
       };
     case SET_NODES:
       return {
-        nodes: action.payload,
+        nodes: [...action.payload],
       };
     default:
       return state;

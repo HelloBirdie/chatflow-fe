@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import ReactFlow, {
   useNodesState,
   useEdgesState,
@@ -8,6 +8,7 @@ import ReactFlow, {
   Background,
   ControlButton,
 } from 'reactflow';
+import { useSelector } from 'react-redux';
 
 import { useDroppable } from '@dnd-kit/core';
 
@@ -20,39 +21,40 @@ enum BackgroundVariant {
   Cross = 'cross',
 }
 
-const initialNodes = [
-  {
-    id: '1',
-    type: 'mindmapNode',
-    position: { x: 0, y: 0 },
-    data: { conversationPairId: 1, userMessage: 'Hello', aiMessage: 'Hi' },
-  },
-  {
-    id: '2',
-    type: 'mindmapNode',
-    position: { x: 0, y: 100 },
-    data: { conversationPairId: 2, userMessage: 'Hello', aiMessage: 'Hi' },
-  },
-  {
-    id: '3',
-    type: 'mindmapNode',
-    position: { x: 100, y: 100 },
-    data: { conversationPairId: 3, userMessage: 'Hello', aiMessage: 'Hi' },
-  },
-  {
-    id: '4',
-    type: 'mindmapNode',
-    position: { x: 200, y: 100 },
-    data: { conversationPairId: 4, userMessage: 'Hello', aiMessage: 'Hi' },
-  },
-];
+// const initialNodes = [
+//   {
+//     id: '1',
+//     type: 'mindmapNode',
+//     position: { x: 0, y: 0 },
+//     data: { conversationPairId: 1, userMessage: 'Hello', aiMessage: 'Hi' },
+//   },
+//   {
+//     id: '2',
+//     type: 'mindmapNode',
+//     position: { x: 0, y: 100 },
+//     data: { conversationPairId: 2, userMessage: 'Hello', aiMessage: 'Hi' },
+//   },
+//   {
+//     id: '3',
+//     type: 'mindmapNode',
+//     position: { x: 100, y: 100 },
+//     data: { conversationPairId: 3, userMessage: 'Hello', aiMessage: 'Hi' },
+//   },
+//   {
+//     id: '4',
+//     type: 'mindmapNode',
+//     position: { x: 200, y: 100 },
+//     data: { conversationPairId: 4, userMessage: 'Hello', aiMessage: 'Hi' },
+//   },
+// ];
 
 const initialEdges = [{ id: 'e1-2', source: '1', target: '2' }];
 
 const proOptions = { hideAttribution: true };
 
 const MindmapCanvas = () => {
-  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
+  const reduxNodes = useSelector((state: any) => state.nodes.nodes);
+  const [nodes, setNodes, onNodesChange] = useNodesState(reduxNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
   const [showMiniMap, setShowMiniMap] = useState(false);
 
@@ -66,6 +68,10 @@ const MindmapCanvas = () => {
   const { setNodeRef } = useDroppable({
     id: 'mindmapCanvas',
   });
+
+  useEffect(() => {
+    setNodes(reduxNodes);
+  }, [reduxNodes]);
 
   return (
     <div style={{ width: '100vw', height: '100vh' }} ref={setNodeRef}>

@@ -68,6 +68,8 @@ const Mindmap = () => {
         height: '100vh',
         width: '100vw',
         position: 'relative',
+        display: 'flex',
+        flexDirection: 'column',
       }}
     >
       <DndContext

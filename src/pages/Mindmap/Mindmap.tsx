@@ -6,33 +6,36 @@ import { restrictToWindowEdges } from '@dnd-kit/modifiers';
 import _ from 'lodash';
 import CustomDragOverlay from '@/components/CustomDragOverlay/CustomDragOverlay';
 
+import { useViewport } from 'reactflow';
+
 import MindMapHeaderBar from '../../components/MindMapHeaderBar/MindMapHeaderBar';
 import { IConversationPair } from '@/interfaces/conversationPair';
 import { useDispatch } from 'react-redux';
-import { setNodes } from '@/redux/actions/nodeActions';
+import { setNodes, addNode } from '@/redux/actions/nodeActions';
 import { INode } from '@/interfaces/node';
+import ConversationPair from '../../components/ConversationPair/ConversationPair';
 
 const initialNodes: INode[] = [
   {
-    id: '1',
+    id: '11',
     type: 'mindmapNode',
     position: { x: 0, y: 0 },
     data: { conversationPairId: 1, userMessage: 'Hello', aiMessage: 'Hi' },
   },
   {
-    id: '2',
+    id: '12',
     type: 'mindmapNode',
     position: { x: 0, y: 100 },
     data: { conversationPairId: 2, userMessage: 'Hello', aiMessage: 'Hi' },
   },
   {
-    id: '3',
+    id: '13',
     type: 'mindmapNode',
     position: { x: 100, y: 100 },
     data: { conversationPairId: 3, userMessage: 'Hello', aiMessage: 'Hi' },
   },
   {
-    id: '4',
+    id: '14',
     type: 'mindmapNode',
     position: { x: 200, y: 100 },
     data: { conversationPairId: 4, userMessage: 'Hello', aiMessage: 'Hi' },
@@ -40,6 +43,7 @@ const initialNodes: INode[] = [
 ];
 
 const Mindmap = () => {
+  const reactFlowViewport = useViewport();
   const [isDragging, setIsDragging] = useState(false);
   const [draggingConversationPair, setDraggingConversationPair] =
     useState<IConversationPair | null>(null);
@@ -67,6 +71,8 @@ const Mindmap = () => {
         height: '100vh',
         width: '100vw',
         position: 'relative',
+        display: 'flex',
+        flexDirection: 'column',
       }}
     >
       <DndContext
@@ -103,7 +109,31 @@ const Mindmap = () => {
   }
 
   function handleDragEnd(e: any) {
-    console.log(e);
+    if (!inChatBox) {
+      const { clientX: xSource, clientY: ySource } = e.activatorEvent;
+      const { x: xOffset, y: yOffset } = e.delta;
+      const { windowX, windowY } = {
+        windowX: xSource + xOffset,
+        windowY: ySource + yOffset,
+      };
+      const { x: canvasX, y: canvasY, zoom } = reactFlowViewport;
+      // create new node on the position of the drag end
+      const conversationPair = e.active.data.current.conversationPair;
+      const newNodes = {
+        id: conversationPair.id + '',
+        type: 'mindmapNode',
+        position: {
+          x: (windowX - canvasX) / zoom,
+          y: (windowY - canvasY) / zoom,
+        },
+        data: {
+          conversationPairId: conversationPair.id,
+          userMessage: conversationPair.userMessage.content,
+          aiMessage: conversationPair.aiMessage.content,
+        },
+      };
+      dispatch(addNode(newNodes));
+    }
     setIsDragging(false);
   }
 

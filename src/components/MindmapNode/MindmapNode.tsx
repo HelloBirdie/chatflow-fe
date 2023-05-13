@@ -6,6 +6,7 @@ const NodeContainer = styled.div`
   border: 1px solid black;
   padding: 10px;
   border-radius: 8px;
+  max-width: 300px;
   &.mindmap-node-drag-hovered {
     background-color: #e8e8e8;
   }

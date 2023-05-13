@@ -4,9 +4,6 @@ const MindMapHeaderBar = () => {
   return (
     <div
       style={{
-        position: 'absolute',
-        top: '0px',
-        left: '0px',
         width: '100vw',
         height: '60px',
         backgroundColor: 'white',

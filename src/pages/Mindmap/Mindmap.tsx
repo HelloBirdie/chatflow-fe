@@ -9,8 +9,9 @@ import CustomDragOverlay from '@/components/CustomDragOverlay/CustomDragOverlay'
 import MindMapHeaderBar from '../../components/MindMapHeaderBar/MindMapHeaderBar';
 import { IConversationPair } from '@/interfaces/conversationPair';
 import { useDispatch } from 'react-redux';
-import { setNodes } from '@/redux/actions/nodeActions';
+import { setNodes, addNode } from '@/redux/actions/nodeActions';
 import { INode } from '@/interfaces/node';
+import ConversationPair from '../../components/ConversationPair/ConversationPair';
 
 const initialNodes: INode[] = [
   {
@@ -103,7 +104,23 @@ const Mindmap = () => {
   }
 
   function handleDragEnd(e: any) {
-    console.log(e);
+    if (!inChatBox) {
+      console.log(e);
+      // create new node on the position of the drag end
+      const { pageX: mouseX, pageY: mouseY } = e.activatorEvent;
+      const conversationPair = e.active.data.current.conversationPair;
+      const newNodes = {
+        id: conversationPair.id + '',
+        type: 'mindmapNode',
+        position: { x: mouseX, y: mouseY },
+        data: {
+          conversationPairId: conversationPair.id,
+          userMessage: conversationPair.userMessage.content,
+          aiMessage: conversationPair.aiMessage.content,
+        },
+      };
+      dispatch(addNode(newNodes));
+    }
     setIsDragging(false);
   }
 

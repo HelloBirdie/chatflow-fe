@@ -10,6 +10,7 @@ export const generateEdgesFromNodes = (nodes: INode[] | []): IEdge[] => {
         id: `e${node.id}-${node.parentNode}`,
         source: node.parentNode,
         target: node.id,
+        type: 'smoothstep',
       });
     }
   });
@@ -26,12 +27,13 @@ export const getLayoutedElements = (
   }
   const dagreGraph = new dagre.graphlib.Graph();
   dagreGraph.setDefaultEdgeLabel(() => ({}));
-  const nodeWidth = 172;
-  const nodeHeight = 36;
+
   const isHorizontal = direction === 'LR';
-  dagreGraph.setGraph({ rankdir: direction });
+  dagreGraph.setGraph({ rankdir: direction, ranker: 'tight-tree' });
 
   nodes.forEach((node: any) => {
+    const nodeWidth = node.width || 180;
+    const nodeHeight = node.height || 40;
     dagreGraph.setNode(node.id, { width: nodeWidth, height: nodeHeight });
   });
 
@@ -42,6 +44,8 @@ export const getLayoutedElements = (
   dagre.layout(dagreGraph);
 
   nodes.forEach((node: any) => {
+    const nodeWidth = node.width || 180;
+    const nodeHeight = node.height || 40;
     const nodeWithPosition = dagreGraph.node(node.id);
     node.targetPosition = isHorizontal ? 'left' : 'top';
     node.sourcePosition = isHorizontal ? 'right' : 'bottom';

@@ -4,6 +4,8 @@ export interface INode {
   position: { x: number; y: number };
   parentNode: string | null;
   data: INodeData;
+  targetPosition?: string;
+  sourcePosition?: string;
 }
 
 export interface INodeData {

@@ -13,7 +13,6 @@ import { IConversationPair } from '@/interfaces/conversationPair';
 import { useDispatch } from 'react-redux';
 import { setNodes, addNode } from '@/redux/actions/nodeActions';
 import { INode } from '@/interfaces/node';
-import ConversationPair from '../../components/ConversationPair/ConversationPair';
 import { generateEdgesFromNodes } from '@/utils/mindmapUtils';
 import { setEdges } from '@/redux/actions/edgeActions';
 

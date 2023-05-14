@@ -1,4 +1,10 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useState,
+} from 'react';
 import ReactFlow, {
   useNodesState,
   useEdgesState,
@@ -11,9 +17,11 @@ import ReactFlow, {
 import { useSelector } from 'react-redux';
 
 import { useDroppable } from '@dnd-kit/core';
+import { isEqual } from 'lodash';
 
 import 'reactflow/dist/style.css';
 import MindmapNode from '../MindmapNode/MindmapNode';
+import { getLayoutedElements } from '@/utils/mindmapUtils';
 
 enum BackgroundVariant {
   Lines = 'lines',
@@ -43,11 +51,18 @@ const MindmapCanvas = () => {
 
   useEffect(() => {
     setNodes(reduxNodes);
-  }, [reduxNodes]);
-
-  useEffect(() => {
     setEdges(reduxEdges);
-  }, [reduxEdges]);
+  }, [reduxNodes, reduxEdges]);
+
+  useLayoutEffect(() => {
+    const layoutedElements = getLayoutedElements(nodes, edges);
+    if (!isEqual(nodes, layoutedElements.nodes)) {
+      setNodes(layoutedElements.nodes);
+    }
+    if (!isEqual(edges, layoutedElements.edges)) {
+      setEdges(layoutedElements.edges);
+    }
+  }, [nodes, edges]);
 
   return (
     <div style={{ width: '100vw', height: '100vh' }} ref={setNodeRef}>

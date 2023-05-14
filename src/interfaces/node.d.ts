@@ -6,6 +6,8 @@ export interface INode {
   data: INodeData;
   targetPosition?: string;
   sourcePosition?: string;
+  height?: number;
+  width?: number;
 }
 
 export interface INodeData {

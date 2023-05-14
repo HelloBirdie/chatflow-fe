@@ -33,11 +33,11 @@ const MindmapNode = ({ data }: MindmapNodeProps) => {
       ref={setNodeRef}
       className={isOver ? 'mindmap-node-drag-hovered' : ''}
     >
-      <Handle type="target" position={Position.Right} />
+      <Handle type="target" position={Position.Left} />
       <p>{data.userMessage}</p>
       <hr />
       <p>{data.aiMessage}</p>
-      <Handle type="source" position={Position.Left} />
+      <Handle type="source" position={Position.Right} />
     </NodeContainer>
   );
 };

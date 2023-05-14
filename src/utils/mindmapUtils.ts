@@ -7,8 +7,8 @@ export const generateEdgesFromNodes = (nodes: INode[] | []): IEdge[] => {
     if (node.parentNode) {
       edges.push({
         id: `e${node.id}-${node.parentNode}`,
-        source: node.id,
-        target: node.parentNode,
+        source: node.parentNode,
+        target: node.id,
       });
     }
   });

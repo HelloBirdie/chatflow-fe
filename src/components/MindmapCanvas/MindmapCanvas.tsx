@@ -26,7 +26,6 @@ const proOptions = { hideAttribution: true };
 const MindmapCanvas = () => {
   const reduxNodes = useSelector((state: any) => state.nodes.nodes);
   const reduxEdges = useSelector((state: any) => state.edges.edges);
-  console.log(reduxEdges);
   const [nodes, setNodes, onNodesChange] = useNodesState(reduxNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(reduxEdges);
   const [showMiniMap, setShowMiniMap] = useState(false);

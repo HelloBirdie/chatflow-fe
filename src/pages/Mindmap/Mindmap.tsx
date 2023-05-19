@@ -13,32 +13,57 @@ import { IConversationPair } from '@/interfaces/conversationPair';
 import { useDispatch } from 'react-redux';
 import { setNodes, addNode } from '@/redux/actions/nodeActions';
 import { INode } from '@/interfaces/node';
-import ConversationPair from '../../components/ConversationPair/ConversationPair';
+import { generateEdgesFromNodes } from '@/utils/mindmapUtils';
+import { setEdges } from '@/redux/actions/edgeActions';
 
 const initialNodes: INode[] = [
   {
     id: '11',
     type: 'mindmapNode',
     position: { x: 0, y: 0 },
-    data: { conversationPairId: 1, userMessage: 'Hello', aiMessage: 'Hi' },
+    parentNode: null,
+    data: {
+      conversationPairId: 1,
+      userMessage: 'Hello',
+      aiMessage: 'Hi',
+      isParent: true,
+    },
   },
   {
     id: '12',
     type: 'mindmapNode',
     position: { x: 0, y: 100 },
-    data: { conversationPairId: 2, userMessage: 'Hello', aiMessage: 'Hi' },
+    parentNode: '11',
+    data: {
+      conversationPairId: 2,
+      userMessage: 'Hello',
+      aiMessage: 'Hi',
+      isParent: false,
+    },
   },
   {
     id: '13',
     type: 'mindmapNode',
     position: { x: 100, y: 100 },
-    data: { conversationPairId: 3, userMessage: 'Hello', aiMessage: 'Hi' },
+    parentNode: '11',
+    data: {
+      conversationPairId: 3,
+      userMessage: 'Hello',
+      aiMessage: 'Hi',
+      isParent: false,
+    },
   },
   {
     id: '14',
     type: 'mindmapNode',
     position: { x: 200, y: 100 },
-    data: { conversationPairId: 4, userMessage: 'Hello', aiMessage: 'Hi' },
+    parentNode: '11',
+    data: {
+      conversationPairId: 4,
+      userMessage: 'Hello',
+      aiMessage: 'Hi',
+      isParent: false,
+    },
   },
 ];
 
@@ -59,6 +84,8 @@ const Mindmap = () => {
   useEffect(() => {
     const fetchNodes = () => {
       dispatch(setNodes(initialNodes));
+      const edges = generateEdgesFromNodes(initialNodes);
+      dispatch(setEdges(edges));
     };
 
     fetchNodes();
@@ -126,10 +153,12 @@ const Mindmap = () => {
           x: (windowX - canvasX) / zoom,
           y: (windowY - canvasY) / zoom,
         },
+        parentNode: null,
         data: {
           conversationPairId: conversationPair.id,
           userMessage: conversationPair.userMessage.content,
           aiMessage: conversationPair.aiMessage.content,
+          isParent: false,
         },
       };
       dispatch(addNode(newNodes));

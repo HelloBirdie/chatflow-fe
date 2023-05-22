@@ -90,6 +90,22 @@ const NodeContainer = styled.div`
       margin-bottom: 10px;
     }
   }
+
+  .handle {
+    background-color: #e5e5e8;
+    width: 8px;
+    height: 8px;
+    border: 2px #7b9bfe solid;
+    background-color: #f0f1f6;
+
+    &.left {
+      left: -4px;
+    }
+
+    &.right {
+      right: -4px;
+    }
+  }
 `;
 
 interface MindmapNodeProps {
@@ -154,7 +170,6 @@ const MindmapNode = ({ id, data }: MindmapNodeProps) => {
         </div>
       </div>
       <div ref={nodeRef}>
-        <Handle type="target" position={Position.Left} />
         <div
           className={`message user-message ${
             showUserMessageExpandIcon ? 'show-expand-icon' : ''
@@ -214,7 +229,16 @@ const MindmapNode = ({ id, data }: MindmapNodeProps) => {
             />
           )}
         </div>
-        <Handle type="source" position={Position.Right} />
+        <Handle
+          type="target"
+          position={Position.Left}
+          className="handle left"
+        />
+        <Handle
+          type="source"
+          position={Position.Right}
+          className="handle right"
+        />
       </div>
     </NodeContainer>
   );

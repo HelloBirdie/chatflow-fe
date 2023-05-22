@@ -103,7 +103,13 @@ const MindmapCanvas = () => {
             }}
           />
         )}
-        <Background variant={BackgroundVariant.Dots} gap={12} size={1} />
+        <Background
+          variant={BackgroundVariant.Dots}
+          gap={12}
+          size={1}
+          color="#C0C9DC"
+          style={{ backgroundColor: '#F2F3F7' }}
+        />
       </ReactFlow>
     </div>
   );

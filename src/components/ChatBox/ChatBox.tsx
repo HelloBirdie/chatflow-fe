@@ -22,7 +22,7 @@ const ChatBoxToggleButton = styled.button`
   border: 0px;
 
   // add the surrounding shadow
-  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.213);
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
 
   transition: all 0.2s ease-in-out;
 
@@ -51,7 +51,7 @@ const ChatBoxContainer = styled.div`
   border-radius: 12px;
   overflow: hidden;
 
-  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.213);
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
 
   /* transition: 0.2s; */
 

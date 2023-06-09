@@ -70,6 +70,9 @@ const Login = () => {
                 onChange={(event) => setEmail(event.target.value)}
               />
             </FormControl>
+
+            {/* TODO: add show and hide option */}
+            {/* TODO: add password regex */}
             <FormControl mt={4} isRequired>
               <Input
                 type="password"
@@ -78,6 +81,8 @@ const Login = () => {
                 onChange={(event) => setPassword(event.target.value)}
               />
             </FormControl>
+
+            {/* TODO: add loading effect */}
             <Button width="full" mt={4} type="submit">
               Sign In
             </Button>

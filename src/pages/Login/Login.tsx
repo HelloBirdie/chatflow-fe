@@ -1,10 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import logo from '@/assets/images/chatflow-logo-round-blue-bg.png';
 import { Link } from 'react-router-dom';
 import { Icon } from '@chakra-ui/react';
 import { BsGithub } from 'react-icons/bs';
 import { FcGoogle } from 'react-icons/fc';
+import { Input } from '@chakra-ui/react';
+import {
+  FormControl,
+  FormLabel,
+  FormErrorMessage,
+  FormHelperText,
+} from '@chakra-ui/react';
+import clsx from 'clsx';
 
 const Login = () => {
   return (
@@ -39,6 +47,16 @@ const Login = () => {
           <Icon as={FcGoogle} className="mr-8" boxSize={10} />
           <span className="mr-6 text-xl">Continue with Google</span>
         </button>
+
+        <p
+          className={clsx(
+            'flex flex-row items-center mt-6 text-gray-500 w-[340px]',
+          )}
+        >
+          <div className="flex-grow bg bg-gray-300 h-[1px]" />
+          <span className="flex-grow-0 mx-4 ">Or with your email</span>
+          <div className="flex-grow bg bg-gray-300 h-[1px]" />
+        </p>
       </div>
     </div>
   );

@@ -16,7 +16,7 @@ const Login = () => {
     alert(`Email: ${email} & Password: ${password}`);
   };
   return (
-    <div className="w-full h-full flex items-center justify-center -mt-20">
+    <div className="w-full h-full flex items-center justify-center">
       <div className="flex flex-col items-center">
         {/* Logo */}
         <img

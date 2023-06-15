@@ -29,7 +29,6 @@ const SignUp = () => {
   // const [password, setPassword] = useState('');
   // const [confPwd, setConfPwd] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [showConfPwd, setShowConfPwd] = useState(false);
   const [showLoading, setShowLoading] = useState(false);
 
   // const initialValues = {
@@ -169,7 +168,7 @@ const SignUp = () => {
             >
               <InputGroup>
                 <Input
-                  type={showConfPwd ? 'text' : 'password'}
+                  type={showPassword ? 'text' : 'password'}
                   placeholder="Confirm password"
                   size="lg"
                   {...register('confirmPassword')}
@@ -178,11 +177,11 @@ const SignUp = () => {
                   <Button
                     variant={'ghost'}
                     onClick={() =>
-                      setShowConfPwd((showConfPwd) => !showConfPwd)
+                      setShowPassword((showPassword) => !showPassword)
                     }
                     mr={2}
                   >
-                    {showConfPwd ? <ViewIcon /> : <ViewOffIcon />}
+                    {showPassword ? <ViewIcon /> : <ViewOffIcon />}
                   </Button>
                 </InputRightElement>
               </InputGroup>

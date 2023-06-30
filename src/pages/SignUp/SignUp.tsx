@@ -7,7 +7,6 @@ import { Link } from 'react-router-dom';
 import {
   Icon,
   FormControl,
-  FormHelperText,
   FormErrorMessage,
   Input,
   Button,
@@ -30,7 +29,7 @@ const SignUp = () => {
   // const [password, setPassword] = useState('');
   // const [confPwd, setConfPwd] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [showConfPwd, setShowConfPwd] = useState(false);
+  const [showLoading, setShowLoading] = useState(false);
 
   // const initialValues = {
   //   email: '',
@@ -82,6 +81,8 @@ const SignUp = () => {
 
   const onSubmit: SubmitHandler<IUserForm> = (values: object) => {
     console.log('Registration Form:::::', values);
+    setShowLoading(true);
+    setTimeout(() => setShowLoading(false), 3000);
   };
 
   return (
@@ -111,7 +112,10 @@ const SignUp = () => {
         {/* Signup Form */}
         <div>
           <form onSubmit={handleSubmit(onSubmit)}>
-            <FormControl mt={4} isInvalid={!(typeof errors.email === "undefined")}>
+            <FormControl
+              mt={4}
+              isInvalid={!(typeof errors.email === 'undefined')}
+            >
               <Input
                 type="text"
                 placeholder="Your email"
@@ -128,7 +132,10 @@ const SignUp = () => {
 
             {/* TODO: add show and hide option */}
             {/* TODO: add password regex */}
-            <FormControl mt={4} isInvalid={!(typeof errors.password === "undefined")}>
+            <FormControl
+              mt={4}
+              isInvalid={!(typeof errors.password === 'undefined')}
+            >
               <InputGroup>
                 <Input
                   type={showPassword ? 'text' : 'password'}
@@ -155,10 +162,13 @@ const SignUp = () => {
               )}
             </FormControl>
 
-            <FormControl mt={4} isInvalid={!(typeof errors.confirmPassword === "undefined")}>
+            <FormControl
+              mt={4}
+              isInvalid={!(typeof errors.confirmPassword === 'undefined')}
+            >
               <InputGroup>
                 <Input
-                  type={showConfPwd ? 'text' : 'password'}
+                  type={showPassword ? 'text' : 'password'}
                   placeholder="Confirm password"
                   size="lg"
                   {...register('confirmPassword')}
@@ -167,11 +177,11 @@ const SignUp = () => {
                   <Button
                     variant={'ghost'}
                     onClick={() =>
-                      setShowConfPwd((showConfPwd) => !showConfPwd)
+                      setShowPassword((showPassword) => !showPassword)
                     }
                     mr={2}
                   >
-                    {showConfPwd ? <ViewIcon /> : <ViewOffIcon />}
+                    {showPassword ? <ViewIcon /> : <ViewOffIcon />}
                   </Button>
                 </InputRightElement>
               </InputGroup>
@@ -190,7 +200,13 @@ const SignUp = () => {
               borderRadius="20"
               background="#0042D9"
               color="white"
+              _hover={{ bg: '#0036B4' }}
+              _active={{ bg: '#002782' }}
+              isLoading={showLoading}
+              loadingText="Submitting"
               type="submit"
+              disabled={showLoading}
+              pointerEvents={showLoading ? 'none' : 'auto'}
             >
               Sign up for free
             </Button>

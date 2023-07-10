@@ -125,9 +125,6 @@ interface IUserForm {
   password: String;
 }
 
-const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
-const googleClientSecret = import.meta.env.VITE_GOOGLE_CLIENT_SECRET;
-
 const Login = () => {
   // const [email, setEmail] = useState('');
   // const [password, setPassword] = useState('');
@@ -172,12 +169,6 @@ const Login = () => {
     setShowLoading(true);
     setTimeout(() => setShowLoading(false), 3000);
   };
-
-  useEffect(() => {
-    console.log(googleClientId, googleClientSecret);
-
-    return () => {};
-  }, []);
 
   const googleLogin = useGoogleLogin({
     onSuccess: (tokenResponse) => console.log(tokenResponse),
@@ -295,10 +286,10 @@ const Login = () => {
         </div>
 
         {/* Log In Github */}
-        <button className="flex flex-row items-center justify-center px-[15px] text-gray rounded w-[340px] h-[73px] mt-[20px] border border-gray-300 font-bold hover:bg-gray-100 active:border-blue-700 transition-colors duration-200">
+        {/* <button className="flex flex-row items-center justify-center px-[15px] text-gray rounded w-[340px] h-[73px] mt-[20px] border border-gray-300 font-bold hover:bg-gray-100 active:border-blue-700 transition-colors duration-200">
           <Icon as={BsGithub} className="mr-8" boxSize={9} />
           <span className="mr-6 text-xl">Continue with Github</span>
-        </button>
+        </button> */}
 
         {/* Log In Google */}
         <button

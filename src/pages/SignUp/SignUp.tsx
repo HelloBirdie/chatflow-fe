@@ -17,6 +17,7 @@ import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 import { BsGithub } from 'react-icons/bs';
 import { FcGoogle } from 'react-icons/fc';
 import clsx from 'clsx';
+import { useGoogleLogin } from '@react-oauth/google';
 
 interface IUserForm {
   email: String;
@@ -84,6 +85,10 @@ const SignUp = () => {
     setShowLoading(true);
     setTimeout(() => setShowLoading(false), 3000);
   };
+
+  const googleLogin = useGoogleLogin({
+    onSuccess: (tokenResponse) => console.log(tokenResponse),
+  });
 
   return (
     <div className="w-full h-full flex items-center justify-center">
@@ -224,13 +229,18 @@ const SignUp = () => {
         </div>
 
         {/* Sign In Github */}
-        <button className="flex flex-row items-center justify-center px-[15px] text-gray rounded w-[340px] h-[73px] mt-[20px] border border-gray-300 font-bold hover:bg-gray-100 active:border-blue-700 transition-colors duration-200">
+        {/* <button className="flex flex-row items-center justify-center px-[15px] text-gray rounded w-[340px] h-[73px] mt-[20px] border border-gray-300 font-bold hover:bg-gray-100 active:border-blue-700 transition-colors duration-200">
           <Icon as={BsGithub} className="mr-8" boxSize={9} />
           <span className="mr-6 text-xl">Continue with Github</span>
-        </button>
+        </button> */}
 
         {/* Sign In Google */}
-        <button className="flex flex-row items-center justify-center px-[15px] text-gray rounded w-[340px] h-[73px] mt-[20px] border border-gray-300 font-bold hover:bg-gray-100 active:border-blue-700 transition-colors duration-200">
+        <button
+          className="flex flex-row items-center justify-center px-[15px] text-gray rounded w-[340px] h-[73px] mt-[20px] border border-gray-300 font-bold hover:bg-gray-100 active:border-blue-700 transition-colors duration-200"
+          onClick={() => {
+            googleLogin();
+          }}
+        >
           <Icon as={FcGoogle} className="mr-8" boxSize={10} />
           <span className="mr-6 text-xl">Continue with Google</span>
         </button>

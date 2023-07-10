@@ -8,6 +8,7 @@ import { ChakraProvider } from '@chakra-ui/react';
 import { Provider } from 'react-redux';
 import { ReactFlowProvider } from 'reactflow';
 import store from '@/redux/store';
+import { GoogleOAuthProvider } from '@react-oauth/google';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement,
@@ -17,9 +18,11 @@ root.render(
     <BrowserRouter>
       <ChakraProvider>
         <ReactFlowProvider>
-          <Provider store={store}>
-            <App />
-          </Provider>
+          <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
+            <Provider store={store}>
+              <App />
+            </Provider>
+          </GoogleOAuthProvider>
         </ReactFlowProvider>
       </ChakraProvider>
     </BrowserRouter>

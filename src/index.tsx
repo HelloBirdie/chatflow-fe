@@ -18,7 +18,7 @@ root.render(
     <BrowserRouter>
       <ChakraProvider>
         <ReactFlowProvider>
-          <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
+          <GoogleOAuthProvider clientId={import.meta.env.VITE_APP_GOOGLE_CLIENT_ID}>
             <Provider store={store}>
               <App />
             </Provider>

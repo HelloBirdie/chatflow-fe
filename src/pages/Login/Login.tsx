@@ -99,7 +99,7 @@
 
 // export default Login;
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -118,6 +118,7 @@ import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 import { BsGithub } from 'react-icons/bs';
 import { FcGoogle } from 'react-icons/fc';
 import clsx from 'clsx';
+import { useGoogleLogin } from '@react-oauth/google';
 
 interface IUserForm {
   email: String;
@@ -168,6 +169,10 @@ const Login = () => {
     setShowLoading(true);
     setTimeout(() => setShowLoading(false), 3000);
   };
+
+  const googleLogin = useGoogleLogin({
+    onSuccess: (tokenResponse) => console.log(tokenResponse),
+  });
 
   return (
     <div className="w-full h-full flex items-center justify-center">
@@ -248,21 +253,21 @@ const Login = () => {
 
             {/* TODO: add loading effect */}
             <Button
-                width="full"
-                mt={8}
-                borderRadius="20"
-                background="#0042D9"
-                color="white"
-                _hover={{ bg: '#0036B4' }}
-                _active={{bg: '#002782'}}
-                isLoading={showLoading}
-                loadingText="Submitting"
-                type="submit"
-                disabled={showLoading}
-                pointerEvents={showLoading ? 'none' : 'auto'}
-              >
-                Log in
-              </Button>
+              width="full"
+              mt={8}
+              borderRadius="20"
+              background="#0042D9"
+              color="white"
+              _hover={{ bg: '#0036B4' }}
+              _active={{ bg: '#002782' }}
+              isLoading={showLoading}
+              loadingText="Submitting"
+              type="submit"
+              disabled={showLoading}
+              pointerEvents={showLoading ? 'none' : 'auto'}
+            >
+              Log in
+            </Button>
           </form>
         </div>
 
@@ -281,13 +286,18 @@ const Login = () => {
         </div>
 
         {/* Log In Github */}
-        <button className="flex flex-row items-center justify-center px-[15px] text-gray rounded w-[340px] h-[73px] mt-[20px] border border-gray-300 font-bold hover:bg-gray-100 active:border-blue-700 transition-colors duration-200">
+        {/* <button className="flex flex-row items-center justify-center px-[15px] text-gray rounded w-[340px] h-[73px] mt-[20px] border border-gray-300 font-bold hover:bg-gray-100 active:border-blue-700 transition-colors duration-200">
           <Icon as={BsGithub} className="mr-8" boxSize={9} />
           <span className="mr-6 text-xl">Continue with Github</span>
-        </button>
+        </button> */}
 
         {/* Log In Google */}
-        <button className="flex flex-row items-center justify-center px-[15px] text-gray rounded w-[340px] h-[73px] mt-[20px] border border-gray-300 font-bold hover:bg-gray-100 active:border-blue-700 transition-colors duration-200">
+        <button
+          className="flex flex-row items-center justify-center px-[15px] text-gray rounded w-[340px] h-[73px] mt-[20px] border border-gray-300 font-bold hover:bg-gray-100 active:border-blue-700 transition-colors duration-200"
+          onClick={() => {
+            googleLogin();
+          }}
+        >
           <Icon as={FcGoogle} className="mr-8" boxSize={10} />
           <span className="mr-6 text-xl">Continue with Google</span>
         </button>

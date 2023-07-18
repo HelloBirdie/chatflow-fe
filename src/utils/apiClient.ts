@@ -19,7 +19,7 @@ apiClient.interceptors.request.use(
     const token = localStorage.getItem('token');
     if (token) {
       if (!NON_TOKEN_URL_LIST.includes(config.url as string)) {
-        config.headers.Authorization = token;
+        config.headers.Authorization = 'Bearer ' + token;
       }
     }
     return config;

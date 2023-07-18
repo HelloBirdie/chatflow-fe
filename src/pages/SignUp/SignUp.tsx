@@ -12,12 +12,14 @@ import {
   Button,
   InputGroup,
   InputRightElement,
+  useToast,
 } from '@chakra-ui/react';
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 import { BsGithub } from 'react-icons/bs';
 import { FcGoogle } from 'react-icons/fc';
 import clsx from 'clsx';
 import { useGoogleLogin } from '@react-oauth/google';
+import { emailSignup } from '@/services/userService';
 
 interface IUserForm {
   email: String;
@@ -31,6 +33,8 @@ const SignUp = () => {
   // const [confPwd, setConfPwd] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [showLoading, setShowLoading] = useState(false);
+
+  const toast = useToast();
 
   // const initialValues = {
   //   email: '',
@@ -80,10 +84,51 @@ const SignUp = () => {
     reValidateMode: 'onSubmit',
   });
 
-  const onSubmit: SubmitHandler<IUserForm> = (values: object) => {
-    console.log('Registration Form:::::', values);
+  const onSubmit: SubmitHandler<IUserForm> = async (values: object) => {
+    // console.log('Registration Form:::::', values);
     setShowLoading(true);
-    setTimeout(() => setShowLoading(false), 3000);
+    // setTimeout(() => setShowLoading(false), 3000);
+
+    const email = values.email;
+
+    // get the part of the email before the @ sign
+    const username = email.substring(0, email.indexOf('@'));
+
+    // set default avatar
+    const avatar = `https://avatars.dicebear.com/api/avataaars/${username}.svg`;
+
+    try {
+      const response = await emailSignup({
+        email: values.email,
+        password: values.password,
+        avatar,
+        username,
+      });
+
+      console.log('Response:::::', response);
+
+      setShowLoading(false);
+
+      toast({
+        title: 'Account created. Redirecting to login page...',
+        status: 'success',
+        isClosable: true,
+        position: 'top',
+      });
+      setTimeout(() => {
+        window.location.href = '/login';
+      }, 3000);
+    } catch (error) {
+      console.log(error);
+      setShowLoading(false);
+      toast({
+        title: 'Error creating account. Please try again.',
+        status: 'error',
+        isClosable: true,
+        position: 'top',
+        duration: 3000,
+      });
+    }
   };
 
   const googleLogin = useGoogleLogin({

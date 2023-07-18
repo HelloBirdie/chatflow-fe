@@ -121,6 +121,8 @@ import clsx from 'clsx';
 import { useGoogleLogin } from '@react-oauth/google';
 import { emailLogin } from '@/services/userService';
 import { IUserEmailLogin } from '@/interfaces/user';
+import { set } from 'lodash';
+import { AxiosError } from 'axios';
 
 // interface IUserForm {
 //   email: String;
@@ -133,6 +135,7 @@ const Login = () => {
   // const [confPwd, setConfPwd] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [showLoading, setShowLoading] = useState(false);
+  const [authError, setAuthError] = useState({ message: '', isError: false });
   // const initialValues = {
   //   email: '',
   //   password: '',
@@ -169,11 +172,38 @@ const Login = () => {
   const onSubmit: SubmitHandler<IUserEmailLogin> = async (
     values: IUserEmailLogin,
   ) => {
-    console.log('Login Form:::::', values);
     setShowLoading(true);
-    // setTimeout(() => setShowLoading(false), 3000);
-    const response = await emailLogin(values);
-    console.log(response);
+
+    try {
+      const response = await emailLogin(values);
+      setAuthError({ message: '', isError: false });
+
+      // console.log(response);
+
+      // get the token from the response authentication header
+      const authnHeader = response.headers.authorization;
+      const token = authnHeader?.split(' ')[1];
+
+      // store the token in local storage
+      localStorage.setItem('token', token!);
+
+      window.location.href = '/';
+    } catch (error) {
+      console.log(error);
+      if ((error as AxiosError).response?.status === 401) {
+        setAuthError({
+          message: 'Incorrect email or password.',
+          isError: true,
+        });
+      } else {
+        setAuthError({
+          message: 'Something went wrong. Please try again.',
+          isError: true,
+        });
+      }
+    } finally {
+      setShowLoading(false);
+    }
   };
 
   const googleLogin = useGoogleLogin({
@@ -229,12 +259,15 @@ const Login = () => {
             {/* TODO: add password regex */}
             <FormControl
               mt={4}
-              isInvalid={!(typeof errors.password === 'undefined')}
+              isInvalid={
+                !(typeof errors.password === 'undefined') || authError.isError
+              }
             >
               <InputGroup>
                 <Input
                   type={showPassword ? 'text' : 'password'}
                   placeholder="Password"
+                  width={80}
                   size="lg"
                   {...register('password')}
                 />
@@ -253,6 +286,12 @@ const Login = () => {
               {errors && errors.password && (
                 <FormErrorMessage color="red">
                   {errors.password.message && errors.password.message}
+                </FormErrorMessage>
+              )}
+
+              {!errors.password && authError && authError.isError && (
+                <FormErrorMessage color="red">
+                  {authError.message && authError.message}
                 </FormErrorMessage>
               )}
             </FormControl>

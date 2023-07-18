@@ -169,7 +169,7 @@ const Login = () => {
   const onSubmit: SubmitHandler<IUserEmailLogin> = async (
     values: IUserEmailLogin,
   ) => {
-    console.log('Login Form:::::', values);
+    // console.log('Login Form:::::', values);
     setShowLoading(true);
     // setTimeout(() => setShowLoading(false), 3000);
     const response = await emailLogin(values);

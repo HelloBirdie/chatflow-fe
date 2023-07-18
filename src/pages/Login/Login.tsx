@@ -119,11 +119,13 @@ import { BsGithub } from 'react-icons/bs';
 import { FcGoogle } from 'react-icons/fc';
 import clsx from 'clsx';
 import { useGoogleLogin } from '@react-oauth/google';
+import { emailLogin } from '@/services/userService';
+import { IUserEmailLogin } from '@/interfaces/user';
 
-interface IUserForm {
-  email: String;
-  password: String;
-}
+// interface IUserForm {
+//   email: String;
+//   password: String;
+// }
 
 const Login = () => {
   // const [email, setEmail] = useState('');
@@ -164,10 +166,14 @@ const Login = () => {
     reValidateMode: 'onSubmit',
   });
 
-  const onSubmit: SubmitHandler<IUserForm> = (values: object) => {
+  const onSubmit: SubmitHandler<IUserEmailLogin> = async (
+    values: IUserEmailLogin,
+  ) => {
     console.log('Login Form:::::', values);
     setShowLoading(true);
-    setTimeout(() => setShowLoading(false), 3000);
+    // setTimeout(() => setShowLoading(false), 3000);
+    const response = await emailLogin(values);
+    console.log(response);
   };
 
   const googleLogin = useGoogleLogin({

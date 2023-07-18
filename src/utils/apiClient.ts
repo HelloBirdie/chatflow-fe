@@ -7,7 +7,12 @@ const apiClient = axios.create({
   timeout: 10000,
 });
 
-const NON_TOKEN_URL_LIST = ['/login', '/signup'];
+// TODO: check if this is the best way to handle this
+const NON_TOKEN_URL_LIST = [
+  '/auth/login/email',
+  '/auth/login/google',
+  '/users/signup',
+];
 
 apiClient.interceptors.request.use(
   (config) => {

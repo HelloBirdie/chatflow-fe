@@ -2,7 +2,18 @@ import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { useDroppable } from '@dnd-kit/core';
 import { Handle, Position } from 'reactflow';
-import { Icon } from '@chakra-ui/react';
+import {
+  Icon,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverHeader,
+  PopoverBody,
+  PopoverFooter,
+  PopoverArrow,
+  PopoverCloseButton,
+  PopoverAnchor,
+} from '@chakra-ui/react';
 import { IoIosMore } from 'react-icons/io';
 import { MdOutlineReadMore } from 'react-icons/md';
 import { AiOutlineQuestionCircle } from 'react-icons/ai';
@@ -41,11 +52,28 @@ const NodeContainer = styled.div`
     height: 15px;
     line-height: 15px;
 
-    div {
+    .operations,
+    .find-in-chat {
       display: flex;
       justify-content: center;
       align-items: center;
       cursor: pointer;
+    }
+
+    .operation-buttons-bar {
+      button {
+        padding: 5px 7px;
+        font-size: 12px;
+        transition: all 0.1s ease-in-out;
+        :hover {
+          background-color: #f5f5f5;
+        }
+        border-right: 1px solid #e5e5e8;
+
+        :last-child {
+          border-right: none;
+        }
+      }
     }
   }
 
@@ -172,10 +200,31 @@ const MindmapNode = ({ id, data, selected }: MindmapNodeProps) => {
     >
       <div className="node-operation-bar">
         <div>
-          <Icon as={IoIosMore} w={4} h={4} />
+          <Popover placement="top-start">
+            <PopoverTrigger>
+              <Icon className="operations" as={IoIosMore} w={4} h={4} />
+            </PopoverTrigger>
+            <PopoverContent
+              className="relative bottom-8"
+              width={'auto'}
+              overflow={'hidden'}
+            >
+              <PopoverArrow />
+              {/* <PopoverCloseButton /> */}
+              {/* <PopoverHeader>Confirmation!</PopoverHeader> */}
+              <PopoverBody padding="0">
+                <div className="h-auto operation-buttons-bar text-gray-950">
+                  <button>Colors</button>
+                  <button>Add Tags</button>
+                  <button>Add Notes</button>
+                  <button className="text-red-600">Delete</button>
+                </div>
+              </PopoverBody>
+            </PopoverContent>
+          </Popover>
         </div>
         <div>
-          <Icon as={MdOutlineReadMore} w={4} h={4} />
+          <Icon className="find-in-chat" as={MdOutlineReadMore} w={4} h={4} />
         </div>
       </div>
       <div ref={nodeRef}>

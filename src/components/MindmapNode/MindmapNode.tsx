@@ -17,10 +17,18 @@ const NodeContainer = styled.div`
   font-size: 10px;
   max-width: 320px;
   min-width: 120px;
-  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 3px 4px 0px rgba(0, 0, 0, 0.1);
   background-color: white;
-  &.mindmap-node-drag-hovered {
-    background-color: #e8e8e8;
+  transition: all 0.2s ease-in-out;
+  box-sizing: content-box;
+  border: 1px solid transparent;
+
+  :hover {
+    box-shadow: 0px 3px 12px 0px rgba(50, 50, 50, 0.1);
+  }
+
+  &.mindmap-node-selected {
+    border: 1px solid #3182ce;
   }
 
   .node-operation-bar {
@@ -116,9 +124,10 @@ interface MindmapNodeProps {
     aiMessage: string;
     isParent: boolean;
   };
+  selected: boolean;
 }
 
-const MindmapNode = ({ id, data }: MindmapNodeProps) => {
+const MindmapNode = ({ id, data, selected }: MindmapNodeProps) => {
   const [showUserMessageExpandIcon, setShowUserMessageExpandIcon] =
     useState(false);
   const [showAiMessageExpandIcon, setShowAiMessageExpandIcon] = useState(false);
@@ -159,7 +168,7 @@ const MindmapNode = ({ id, data }: MindmapNodeProps) => {
   return (
     <NodeContainer
       ref={setNodeRef}
-      className={isOver ? 'mindmap-node-drag-hovered' : ''}
+      className={selected ? 'mindmap-node-selected' : ''}
     >
       <div className="node-operation-bar">
         <div>

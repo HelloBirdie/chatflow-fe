@@ -2,7 +2,18 @@ import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { useDroppable } from '@dnd-kit/core';
 import { Handle, Position } from 'reactflow';
-import { Icon } from '@chakra-ui/react';
+import {
+  Icon,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverHeader,
+  PopoverBody,
+  PopoverFooter,
+  PopoverArrow,
+  PopoverCloseButton,
+  PopoverAnchor,
+} from '@chakra-ui/react';
 import { IoIosMore } from 'react-icons/io';
 import { MdOutlineReadMore } from 'react-icons/md';
 import { AiOutlineQuestionCircle } from 'react-icons/ai';
@@ -17,10 +28,18 @@ const NodeContainer = styled.div`
   font-size: 10px;
   max-width: 320px;
   min-width: 120px;
-  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 3px 4px 0px rgba(0, 0, 0, 0.1);
   background-color: white;
-  &.mindmap-node-drag-hovered {
-    background-color: #e8e8e8;
+  transition: all 0.2s ease-in-out;
+  box-sizing: content-box;
+  border: 1px solid transparent;
+
+  :hover {
+    box-shadow: 0px 3px 12px 0px rgba(50, 50, 50, 0.1);
+  }
+
+  &.mindmap-node-selected {
+    border: 1px solid #3182ce;
   }
 
   .node-operation-bar {
@@ -33,11 +52,28 @@ const NodeContainer = styled.div`
     height: 15px;
     line-height: 15px;
 
-    div {
+    .operations,
+    .find-in-chat {
       display: flex;
       justify-content: center;
       align-items: center;
       cursor: pointer;
+    }
+
+    .operation-buttons-bar {
+      button {
+        padding: 5px 7px;
+        font-size: 12px;
+        transition: all 0.1s ease-in-out;
+        :hover {
+          background-color: #f5f5f5;
+        }
+        border-right: 1px solid #e5e5e8;
+
+        :last-child {
+          border-right: none;
+        }
+      }
     }
   }
 
@@ -116,9 +152,10 @@ interface MindmapNodeProps {
     aiMessage: string;
     isParent: boolean;
   };
+  selected: boolean;
 }
 
-const MindmapNode = ({ id, data }: MindmapNodeProps) => {
+const MindmapNode = ({ id, data, selected }: MindmapNodeProps) => {
   const [showUserMessageExpandIcon, setShowUserMessageExpandIcon] =
     useState(false);
   const [showAiMessageExpandIcon, setShowAiMessageExpandIcon] = useState(false);
@@ -159,14 +196,35 @@ const MindmapNode = ({ id, data }: MindmapNodeProps) => {
   return (
     <NodeContainer
       ref={setNodeRef}
-      className={isOver ? 'mindmap-node-drag-hovered' : ''}
+      className={selected ? 'mindmap-node-selected' : ''}
     >
       <div className="node-operation-bar">
         <div>
-          <Icon as={IoIosMore} w={4} h={4} />
+          <Popover placement="top-start">
+            <PopoverTrigger>
+              <Icon className="operations" as={IoIosMore} w={4} h={4} />
+            </PopoverTrigger>
+            <PopoverContent
+              className="relative bottom-8"
+              width={'auto'}
+              overflow={'hidden'}
+            >
+              <PopoverArrow />
+              {/* <PopoverCloseButton /> */}
+              {/* <PopoverHeader>Confirmation!</PopoverHeader> */}
+              <PopoverBody padding="0">
+                <div className="h-auto operation-buttons-bar text-gray-950">
+                  <button>Colors</button>
+                  <button>Add Tags</button>
+                  <button>Add Notes</button>
+                  <button className="text-red-600">Delete</button>
+                </div>
+              </PopoverBody>
+            </PopoverContent>
+          </Popover>
         </div>
         <div>
-          <Icon as={MdOutlineReadMore} w={4} h={4} />
+          <Icon className="find-in-chat" as={MdOutlineReadMore} w={4} h={4} />
         </div>
       </div>
       <div ref={nodeRef}>

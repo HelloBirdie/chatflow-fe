@@ -7,15 +7,17 @@ import { RiChat3Line } from 'react-icons/ri';
 import 'react-chat-widget/lib/styles.css';
 import ChatMessageContainer from '../ChatMessageContainer/ChatMessageContainer';
 import ChatMessageInput from '../ChatMessageInput/ChatMessageInput';
+import { ChevronDownIcon } from '@chakra-ui/icons';
 
 const ChatBoxToggleButton = styled.button`
   position: absolute;
   bottom: 20px;
   right: 20px;
-  width: 50px;
-  height: 50px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
-  background-color: white;
+  background-color: #0042d9;
+  color: white;
   z-index: 1000;
   cursor: pointer;
 
@@ -24,17 +26,31 @@ const ChatBoxToggleButton = styled.button`
   // add the surrounding shadow
   box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
 
-  transition: all 0.2s ease-in-out;
-
   display: flex;
   justify-content: center;
   align-items: center;
 
-  // if chatbox is shown, smaller button
-  &.active {
-    /* width: 60px;
-    height: 60px; */
-    transform: scale(1.15);
+  svg {
+    transition: all 0.2s ease-in-out;
+    &.absolute {
+      position: absolute;
+    }
+    &.show {
+      opacity: 100;
+      transform: scale(1);
+      fill: white;
+      &.arrow {
+        rotate: 0deg;
+      }
+    }
+    &.hide {
+      opacity: 0;
+      transform: scale(0);
+      fill: transparent;
+      &.arrow {
+        rotate: -180deg;
+      }
+    }
   }
 `;
 
@@ -44,23 +60,22 @@ const ChatBoxContainer = styled.div`
   flex-direction: column;
   bottom: 90px;
   right: 20px;
-  width: 400px;
-  height: 80vh;
+  display: none;
   background-color: white;
   z-index: 1000;
   border-radius: 12px;
   overflow: hidden;
 
-  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 4px 16px 0px rgba(0, 0, 0, 0.16);
 
   /* transition: 0.2s; */
 
   transition: all 0.2s ease-in-out;
 
   &.active {
-    width: 0px;
-    height: 0px;
-    opacity: 0;
+    display: flex;
+    width: 400px;
+    height: 80vh;
   }
 `;
 
@@ -94,9 +109,21 @@ const ChatBox = forwardRef((props: any, ref: any) => {
       </ChatBoxContainer>
       <ChatBoxToggleButton
         onClick={() => setShowChat(!showChat)}
-        className={showChat ? 'active' : ''}
+        className="duration-200 hover:scale-110 active:scale-95 ease-in-out"
       >
-        <Icon as={RiChat3Line} w={6} h={6} />
+        {/* Chat icon shows when chatbox closes */}
+        <Icon
+          as={RiChat3Line}
+          w={7}
+          h={7}
+          className={showChat ? 'hide' : 'show'}
+        />
+        {/* ArrowDown icon shows then chatbox shows */}
+        <ChevronDownIcon
+          w={7}
+          h={7}
+          className={`arrow absolute ${showChat ? 'show' : 'hide'}`}
+        />
       </ChatBoxToggleButton>
     </div>
   );

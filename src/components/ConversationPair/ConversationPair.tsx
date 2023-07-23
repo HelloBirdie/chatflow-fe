@@ -12,6 +12,10 @@ const CustomContainer = styled.div`
   transition: all 0.2s ease-in-out;
   cursor: default;
 
+  :hover {
+    background-color: #d8d8d8;
+  }
+
   .drag-grip-wrapper {
     cursor: grab;
     position: absolute;
@@ -28,23 +32,13 @@ const CustomContainer = styled.div`
     }
 
     :hover {
-      background-color: #d4d4d4;
+      .dot {
+        background-color: #0042d9;
+      }
     }
   }
   .message {
     margin: 10px 0px;
-
-    &.user-message {
-      background-color: green;
-      display: flex;
-      width: 100%;
-      justify-content: flex-end;
-      padding: 0;
-    }
-  }
-
-  :hover {
-    background-color: #f3f3f3;
   }
 `;
 
@@ -66,7 +60,7 @@ const ConversationPair = (props: IConversationPairProps) => {
     ? {
         // transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
         opacity: 0.5,
-        backgroundColor: '#f3f3f3',
+        backgroundColor: '#D8D8D8',
       }
     : undefined;
 

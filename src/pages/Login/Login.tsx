@@ -113,13 +113,17 @@ import {
   Button,
   InputGroup,
   InputRightElement,
+  useToast,
 } from '@chakra-ui/react';
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 import { BsGithub } from 'react-icons/bs';
 import { FcGoogle } from 'react-icons/fc';
 import clsx from 'clsx';
 import { useGoogleLogin } from '@react-oauth/google';
-import { emailLogin } from '@/services/userService';
+import {
+  emailLogin,
+  googleLogin as googleLoginService,
+} from '@/services/userService';
 import { IUserEmailLogin } from '@/interfaces/user';
 import { set } from 'lodash';
 import { AxiosError } from 'axios';
@@ -136,6 +140,9 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showLoading, setShowLoading] = useState(false);
   const [authError, setAuthError] = useState({ message: '', isError: false });
+
+  const toast = useToast();
+
   // const initialValues = {
   //   email: '',
   //   password: '',
@@ -207,7 +214,26 @@ const Login = () => {
   };
 
   const googleLogin = useGoogleLogin({
-    onSuccess: (tokenResponse) => console.log(tokenResponse),
+    onSuccess: async (tokenResponse) => {
+      const accessToken = tokenResponse.access_token;
+
+      console.log(tokenResponse.access_token);
+
+      try {
+        const response = await googleLoginService(accessToken);
+
+        console.log(response);
+      } catch (error) {
+        console.log(error);
+
+        toast({
+          title: 'Failed to login with Google.',
+          status: 'error',
+          isClosable: true,
+          position: 'top',
+        });
+      }
+    },
   });
 
   return (

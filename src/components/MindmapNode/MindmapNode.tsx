@@ -73,7 +73,7 @@ const NodeContainer = styled.div`
 
     .operation-buttons-bar {
       button {
-        font-size: 14px;
+        font-size: 12px;
         transition: all 0.1s ease-in-out;
         min-width: 1.8rem;
         min-height: 1rem;

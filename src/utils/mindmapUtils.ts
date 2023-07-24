@@ -11,6 +11,9 @@ export const generateEdgesFromNodes = (nodes: INode[] | []): IEdge[] => {
         source: node.parentNode,
         target: node.id,
         type: 'smoothstep',
+        markerEnd: {
+          type: 'arrowclosed',
+        },
       });
     }
   });

@@ -61,7 +61,9 @@ const ChatBoxContainer = styled.div`
   flex-direction: column;
   bottom: 90px;
   right: 20px;
-  display: none;
+  width: 400px;
+  height: 80vh;
+  opacity: 0;
   background-color: white;
   z-index: 1000;
   border-radius: 12px;
@@ -72,11 +74,12 @@ const ChatBoxContainer = styled.div`
   /* transition: 0.2s; */
 
   transition: all 0.2s ease-in-out;
+  transform-origin: right bottom;
+  transform: scale3d(0, 0, 1);
 
   &.active {
-    display: flex;
-    width: 400px;
-    height: 80vh;
+    opacity: 1;
+    transform: scale3d(1, 1, 1);
   }
   .chat-header {
     justify-content: space-between;
@@ -85,6 +88,10 @@ const ChatBoxContainer = styled.div`
       color: #767676;
       font-size: 18px;
       :hover {
+        background-color: white;
+        color: #0042d9;
+      }
+      :active {
         background-color: white;
         color: #0042d9;
       }

@@ -226,6 +226,16 @@ const Login = () => {
         const response = await googleLoginService(accessToken);
 
         console.log(response);
+
+        if (response.status === 200) {
+          const authnHeader = response.headers.authorization;
+          const token = authnHeader?.split(' ')[1];
+
+          // store the token in local storage
+          localStorage.setItem('token', token!);
+
+          window.location.href = '/';
+        }
       } catch (error) {
         console.log(error);
 

@@ -4,20 +4,25 @@ import { useDroppable } from '@dnd-kit/core';
 import { Handle, Position } from 'reactflow';
 import {
   Icon,
+  IconButton,
   Popover,
   PopoverTrigger,
   PopoverContent,
-  PopoverHeader,
   PopoverBody,
-  PopoverFooter,
-  PopoverArrow,
-  PopoverCloseButton,
-  PopoverAnchor,
+  HStack,
+  Tooltip,
 } from '@chakra-ui/react';
+import { useDisclosure } from '@chakra-ui/react';
 import { IoIosMore } from 'react-icons/io';
 import { MdOutlineReadMore } from 'react-icons/md';
 import { AiOutlineQuestionCircle } from 'react-icons/ai';
-import { BsChatSquareDots } from 'react-icons/bs';
+import {
+  BsChatSquareDots,
+  BsPalette,
+  BsTags,
+  BsSticky,
+  BsTrash,
+} from 'react-icons/bs';
 import { GoTriangleUp } from 'react-icons/go';
 
 const NodeContainer = styled.div`
@@ -39,7 +44,7 @@ const NodeContainer = styled.div`
   }
 
   &.mindmap-node-selected {
-    border: 1px solid #3182ce;
+    border: 1px solid #0042d9;
   }
 
   .node-operation-bar {
@@ -58,20 +63,29 @@ const NodeContainer = styled.div`
       justify-content: center;
       align-items: center;
       cursor: pointer;
+      :hover {
+        color: #0042d9;
+      }
+      &.active {
+        color: #0042d9;
+      }
     }
 
     .operation-buttons-bar {
       button {
-        padding: 5px 7px;
-        font-size: 12px;
+        font-size: 14px;
         transition: all 0.1s ease-in-out;
+        min-width: 1.8rem;
+        min-height: 1rem;
+        height: 1.8rem;
+        padding: 5px;
+        margin: 0;
+        border-radius: 0;
         :hover {
-          background-color: #f5f5f5;
+          background-color: #f4f4f5;
         }
-        border-right: 1px solid #e5e5e8;
-
-        :last-child {
-          border-right: none;
+        :active {
+          background-color: #e5e5e8;
         }
       }
     }
@@ -163,10 +177,12 @@ const MindmapNode = ({ id, data, selected }: MindmapNodeProps) => {
   const [aiMessageExpanded, setAiMessageExpanded] = useState(false);
   const userMessageRef = useRef(null);
   const aiMessageRef = useRef(null);
+  const [showOperationsBar, setShowOperationsBar] = useState(false);
   const { isOver, setNodeRef } = useDroppable({
     id: 'mindmap-node-' + data.conversationPairId,
     data: { data },
   });
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   //TODO: remove this
   const nodeRef = useRef(null);
@@ -177,6 +193,16 @@ const MindmapNode = ({ id, data, selected }: MindmapNodeProps) => {
   //     console.log(clientWidth, clientHeight);
   //   }
   // }, []);
+
+  const handleOperationsBarOpen = () => {
+    setShowOperationsBar(true);
+    onOpen();
+  };
+
+  const handleOperationsBarClose = () => {
+    setShowOperationsBar(false);
+    onClose();
+  };
 
   useEffect(() => {
     if (userMessageRef.current && aiMessageRef.current) {
@@ -200,25 +226,60 @@ const MindmapNode = ({ id, data, selected }: MindmapNodeProps) => {
     >
       <div className="node-operation-bar">
         <div>
-          <Popover placement="top-start">
+          <Popover
+            placement="top-start"
+            isOpen={isOpen}
+            onOpen={handleOperationsBarOpen}
+            onClose={handleOperationsBarClose}
+          >
             <PopoverTrigger>
-              <Icon className="operations" as={IoIosMore} w={4} h={4} />
+              <Icon
+                className={
+                  showOperationsBar ? 'operations active' : 'operations'
+                }
+                as={IoIosMore}
+                w={4}
+                h={4}
+              />
             </PopoverTrigger>
             <PopoverContent
-              className="relative bottom-8"
+              className="relative bottom-9"
               width={'auto'}
               overflow={'hidden'}
+              border={'none'}
+              boxShadow="md"
             >
-              <PopoverArrow />
-              {/* <PopoverCloseButton /> */}
-              {/* <PopoverHeader>Confirmation!</PopoverHeader> */}
-              <PopoverBody padding="0">
-                <div className="h-auto operation-buttons-bar text-gray-950">
-                  <button>Colors</button>
-                  <button>Add Tags</button>
-                  <button>Add Notes</button>
-                  <button className="text-red-600">Delete</button>
-                </div>
+              <PopoverBody p="0">
+                <HStack className="h-auto operation-buttons-bar text-gray-800">
+                  <Tooltip label="Choose color" placement="top">
+                    <IconButton
+                      aria-label="choose color"
+                      icon={<BsPalette />}
+                      variant="ghost"
+                    />
+                  </Tooltip>
+                  <Tooltip label="Add tags" placement="top">
+                    <IconButton
+                      aria-label="add tag"
+                      icon={<BsTags />}
+                      variant="ghost"
+                    />
+                  </Tooltip>
+                  <Tooltip label="Add notes" placement="top">
+                    <IconButton
+                      aria-label="add note"
+                      icon={<BsSticky />}
+                      variant="ghost"
+                    />
+                  </Tooltip>
+                  <Tooltip label="Delete" placement="top">
+                    <IconButton
+                      aria-label="delete node"
+                      icon={<BsTrash />}
+                      variant="ghost"
+                    />
+                  </Tooltip>
+                </HStack>
               </PopoverBody>
             </PopoverContent>
           </Popover>

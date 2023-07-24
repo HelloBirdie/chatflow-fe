@@ -114,6 +114,7 @@ import {
   InputGroup,
   InputRightElement,
   useToast,
+  Spinner,
 } from '@chakra-ui/react';
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 import { BsGithub } from 'react-icons/bs';
@@ -140,6 +141,7 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showLoading, setShowLoading] = useState(false);
   const [authError, setAuthError] = useState({ message: '', isError: false });
+  const [googleLoginLoading, setGoogleLoginLoading] = useState(false);
 
   const toast = useToast();
 
@@ -215,6 +217,7 @@ const Login = () => {
 
   const googleLogin = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
+      setGoogleLoginLoading(true);
       const accessToken = tokenResponse.access_token;
 
       console.log(tokenResponse.access_token);
@@ -232,6 +235,8 @@ const Login = () => {
           isClosable: true,
           position: 'top',
         });
+      } finally {
+        setGoogleLoginLoading(false);
       }
     },
   });
@@ -369,8 +374,18 @@ const Login = () => {
             googleLogin();
           }}
         >
-          <Icon as={FcGoogle} className="mr-8" boxSize={10} />
-          <span className="mr-6 text-xl">Continue with Google</span>
+          {googleLoginLoading ? (
+            <Spinner marginRight={'20px'} color="gray" />
+          ) : (
+            <Icon as={FcGoogle} className="mr-8" boxSize={10} />
+          )}
+          <span
+            className={`mr-6 text-xl ${
+              googleLoginLoading ? 'text-gray-500' : ''
+            }`}
+          >
+            Continue with Google
+          </span>
         </button>
       </div>
     </div>

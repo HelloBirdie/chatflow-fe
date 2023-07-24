@@ -1,6 +1,6 @@
 import React, { forwardRef, useState } from 'react';
 import styled from 'styled-components';
-import { Icon } from '@chakra-ui/react';
+import { HStack, Icon, IconButton } from '@chakra-ui/react';
 
 import { RiChat3Line } from 'react-icons/ri';
 
@@ -8,6 +8,7 @@ import 'react-chat-widget/lib/styles.css';
 import ChatMessageContainer from '../ChatMessageContainer/ChatMessageContainer';
 import ChatMessageInput from '../ChatMessageInput/ChatMessageInput';
 import { ChevronDownIcon } from '@chakra-ui/icons';
+import { AiOutlineExpand, AiOutlineMinus } from 'react-icons/ai';
 
 const ChatBoxToggleButton = styled.button`
   position: absolute;
@@ -77,6 +78,18 @@ const ChatBoxContainer = styled.div`
     width: 400px;
     height: 80vh;
   }
+  .chat-header {
+    justify-content: space-between;
+    padding: 0 5px;
+    button {
+      color: #767676;
+      font-size: 18px;
+      :hover {
+        background-color: white;
+        color: #0042d9;
+      }
+    }
+  }
 `;
 
 const ChatMessageInputContainer = styled.div`
@@ -99,6 +112,19 @@ const ChatBox = forwardRef((props: any, ref: any) => {
   return (
     <div>
       <ChatBoxContainer className={showChat ? 'active' : ''} ref={ref}>
+        <HStack className="chat-header">
+          <IconButton
+            aria-label="expand chat box"
+            icon={<AiOutlineExpand />}
+            variant="ghost"
+          />
+          <IconButton
+            aria-label="close chat box"
+            icon={<AiOutlineMinus />}
+            variant="ghost"
+            onClick={() => setShowChat(false)}
+          />
+        </HStack>
         <ChatMessageContainerContainer>
           <ChatMessageContainer />
         </ChatMessageContainerContainer>

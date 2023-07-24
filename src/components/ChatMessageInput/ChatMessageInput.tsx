@@ -28,7 +28,7 @@ const ChatMessageInput = () => {
           ref={textareaRef}
           maxRows={8}
           minRows={1}
-          bg={'gray.100'}
+          bg="#f1f0f1"
           transition="height none"
           variant={'none'}
           resize={'none'}
@@ -44,6 +44,7 @@ const ChatMessageInput = () => {
           icon={<Icon as={FiSend} />}
           onClick={handleSendMessage}
           aria-label="Send message"
+          _hover={{ bg: '#f1f0f1' }}
         />
       </InputGroup>
     </Flex>

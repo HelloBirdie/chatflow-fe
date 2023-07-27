@@ -5,4 +5,5 @@ export interface IEdge {
   target: string;
   type: string;
   markerEnd: EdgeMarkerType;
+  style: CSSProperties;
 }

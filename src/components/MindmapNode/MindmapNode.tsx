@@ -2,28 +2,13 @@ import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { useDroppable } from '@dnd-kit/core';
 import { Handle, Position } from 'reactflow';
-import {
-  Icon,
-  IconButton,
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-  PopoverBody,
-  HStack,
-  Tooltip,
-} from '@chakra-ui/react';
+import { Icon, MenuButton } from '@chakra-ui/react';
 import { useDisclosure } from '@chakra-ui/react';
-import { IoIosMore } from 'react-icons/io';
-import { MdOutlineReadMore } from 'react-icons/md';
 import { AiOutlineQuestionCircle } from 'react-icons/ai';
-import {
-  BsChatSquareDots,
-  BsPalette,
-  BsTags,
-  BsSticky,
-  BsTrash,
-} from 'react-icons/bs';
+import { BsChatSquareDots } from 'react-icons/bs';
 import { GoTriangleUp } from 'react-icons/go';
+import MindmapNodeFooter from '../MindmapNodeFooter/MindmapNodeFooter';
+import MindmapNodeOpBar from '../MindmapNodeOpBar/MindmapNodeOpBar';
 
 const NodeContainer = styled.div`
   border: 0px;
@@ -34,7 +19,7 @@ const NodeContainer = styled.div`
   max-width: 320px;
   min-width: 120px;
   box-shadow: 0px 3px 4px 0px rgba(0, 0, 0, 0.1);
-  background-color: white;
+  // background-color: white;
   transition: all 0.2s ease-in-out;
   box-sizing: content-box;
   border: 1px solid transparent;
@@ -45,50 +30,6 @@ const NodeContainer = styled.div`
 
   &.mindmap-node-selected {
     border: 1px solid #0042d9;
-  }
-
-  .node-operation-bar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 5px;
-    font-size: 12px;
-    color: #a0a0a0;
-    height: 15px;
-    line-height: 15px;
-
-    .operations,
-    .find-in-chat {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      cursor: pointer;
-      :hover {
-        color: #0042d9;
-      }
-      &.active {
-        color: #0042d9;
-      }
-    }
-
-    .operation-buttons-bar {
-      button {
-        font-size: 12px;
-        transition: all 0.1s ease-in-out;
-        min-width: 1.8rem;
-        min-height: 1rem;
-        height: 1.8rem;
-        padding: 5px;
-        margin: 0;
-        border-radius: 0;
-        :hover {
-          background-color: #f4f4f5;
-        }
-        :active {
-          background-color: #e5e5e8;
-        }
-      }
-    }
   }
 
   .message {
@@ -169,7 +110,24 @@ interface MindmapNodeProps {
   selected: boolean;
 }
 
+interface IPalette {
+  id: string;
+  color: string;
+  selected: boolean;
+}
+
 const MindmapNode = ({ id, data, selected }: MindmapNodeProps) => {
+  const [nodePalette, setNodePalette] = useState<IPalette[]>([
+    { id: '#ffffff', color: '#ffffff', selected: true },
+    { id: '#fcf1a6', color: '#fcf1a6', selected: false },
+    { id: '#f6cac7', color: '#f6cac7', selected: false },
+    { id: '#fae1f1', color: '#fae1f1', selected: false },
+    { id: '#c7dbed', color: '#c7dbed', selected: false },
+    { id: '#e6eafd', color: '#e6eafd', selected: false },
+    { id: '#d3e1a0', color: '#d3e1a0', selected: false },
+    { id: '#a1c698', color: '#a1c698', selected: false },
+  ]);
+  const [nodeBgColor, setNodeBgColor] = useState('#ffffff');
   const [showUserMessageExpandIcon, setShowUserMessageExpandIcon] =
     useState(false);
   const [showAiMessageExpandIcon, setShowAiMessageExpandIcon] = useState(false);
@@ -177,7 +135,7 @@ const MindmapNode = ({ id, data, selected }: MindmapNodeProps) => {
   const [aiMessageExpanded, setAiMessageExpanded] = useState(false);
   const userMessageRef = useRef(null);
   const aiMessageRef = useRef(null);
-  const [showOperationsBar, setShowOperationsBar] = useState(false);
+  const [isTagReadMode, setTagReadMode] = React.useState(true);
   const { isOver, setNodeRef } = useDroppable({
     id: 'mindmap-node-' + data.conversationPairId,
     data: { data },
@@ -187,22 +145,25 @@ const MindmapNode = ({ id, data, selected }: MindmapNodeProps) => {
   //TODO: remove this
   const nodeRef = useRef(null);
 
+  const updateColor = (id: string) => {
+    setNodePalette((prevPalette: IPalette[]) => {
+      const newPalette = prevPalette.map((obj: IPalette) => {
+        if (obj.id === id) {
+          setNodeBgColor(obj.color);
+          return { ...obj, selected: true };
+        }
+        return { ...obj, selected: false };
+      });
+      return newPalette;
+    });
+  };
+
   // useEffect(() => {
   //   if (nodeRef.current) {
   //     const { clientWidth, clientHeight } = nodeRef.current;
   //     console.log(clientWidth, clientHeight);
   //   }
   // }, []);
-
-  const handleOperationsBarOpen = () => {
-    setShowOperationsBar(true);
-    onOpen();
-  };
-
-  const handleOperationsBarClose = () => {
-    setShowOperationsBar(false);
-    onClose();
-  };
 
   useEffect(() => {
     if (userMessageRef.current && aiMessageRef.current) {
@@ -223,71 +184,16 @@ const MindmapNode = ({ id, data, selected }: MindmapNodeProps) => {
     <NodeContainer
       ref={setNodeRef}
       className={selected ? 'mindmap-node-selected' : ''}
+      style={{ backgroundColor: nodeBgColor }}
     >
-      <div className="node-operation-bar">
-        <div>
-          <Popover
-            placement="top-start"
-            isOpen={isOpen}
-            onOpen={handleOperationsBarOpen}
-            onClose={handleOperationsBarClose}
-          >
-            <PopoverTrigger>
-              <Icon
-                className={
-                  showOperationsBar ? 'operations active' : 'operations'
-                }
-                as={IoIosMore}
-                w={4}
-                h={4}
-              />
-            </PopoverTrigger>
-            <PopoverContent
-              className="relative bottom-9"
-              width={'auto'}
-              overflow={'hidden'}
-              border={'none'}
-              boxShadow="md"
-            >
-              <PopoverBody p="0">
-                <HStack className="h-auto operation-buttons-bar text-gray-800">
-                  <Tooltip label="Choose color" placement="top">
-                    <IconButton
-                      aria-label="choose color"
-                      icon={<BsPalette />}
-                      variant="ghost"
-                    />
-                  </Tooltip>
-                  <Tooltip label="Add tags" placement="top">
-                    <IconButton
-                      aria-label="add tag"
-                      icon={<BsTags />}
-                      variant="ghost"
-                    />
-                  </Tooltip>
-                  <Tooltip label="Add notes" placement="top">
-                    <IconButton
-                      aria-label="add note"
-                      icon={<BsSticky />}
-                      variant="ghost"
-                    />
-                  </Tooltip>
-                  <Tooltip label="Delete" placement="top">
-                    <IconButton
-                      aria-label="delete node"
-                      icon={<BsTrash />}
-                      variant="ghost"
-                    />
-                  </Tooltip>
-                </HStack>
-              </PopoverBody>
-            </PopoverContent>
-          </Popover>
-        </div>
-        <div>
-          <Icon className="find-in-chat" as={MdOutlineReadMore} w={4} h={4} />
-        </div>
-      </div>
+      {/* Node Operations Bar */}
+      <MindmapNodeOpBar
+        nodePalette={nodePalette}
+        updateColor={updateColor}
+        setTagReadMode={setTagReadMode}
+      />
+
+      {/* Node Content */}
       <div ref={nodeRef}>
         <div
           className={`message user-message ${
@@ -348,6 +254,12 @@ const MindmapNode = ({ id, data, selected }: MindmapNodeProps) => {
             />
           )}
         </div>
+
+        {/* Node Footer */}
+        <MindmapNodeFooter
+          isTagReadMode={isTagReadMode}
+          setTagReadMode={setTagReadMode}
+        />
         <Handle
           type="target"
           position={Position.Left}

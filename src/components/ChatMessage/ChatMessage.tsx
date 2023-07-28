@@ -14,15 +14,16 @@ const MyContainer = styled.div`
     flex-shrink: 0;
     width: fit-content;
     max-width: 80%;
-    padding: 10px;
+    padding: 10px 15px;
     border-radius: 8px;
 
     &.user-message {
-      background-color: #a2a2ff;
+      background-color: #0042d9;
+      color: white;
     }
 
     &.ai-message {
-      background-color: #b8b8b8;
+      background-color: #f1f0f1;
     }
   }
 `;

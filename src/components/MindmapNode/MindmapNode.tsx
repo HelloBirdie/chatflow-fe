@@ -2,23 +2,13 @@ import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { useDroppable } from '@dnd-kit/core';
 import { Handle, Position } from 'reactflow';
-import {
-  Icon,
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-  PopoverHeader,
-  PopoverBody,
-  PopoverFooter,
-  PopoverArrow,
-  PopoverCloseButton,
-  PopoverAnchor,
-} from '@chakra-ui/react';
-import { IoIosMore } from 'react-icons/io';
-import { MdOutlineReadMore } from 'react-icons/md';
+import { Icon, MenuButton } from '@chakra-ui/react';
+import { useDisclosure } from '@chakra-ui/react';
 import { AiOutlineQuestionCircle } from 'react-icons/ai';
 import { BsChatSquareDots } from 'react-icons/bs';
 import { GoTriangleUp } from 'react-icons/go';
+import MindmapNodeFooter from '../MindmapNodeFooter/MindmapNodeFooter';
+import MindmapNodeOpBar from '../MindmapNodeOpBar/MindmapNodeOpBar';
 
 const NodeContainer = styled.div`
   border: 0px;
@@ -29,7 +19,7 @@ const NodeContainer = styled.div`
   max-width: 320px;
   min-width: 120px;
   box-shadow: 0px 3px 4px 0px rgba(0, 0, 0, 0.1);
-  background-color: white;
+  // background-color: white;
   transition: all 0.2s ease-in-out;
   box-sizing: content-box;
   border: 1px solid transparent;
@@ -39,42 +29,7 @@ const NodeContainer = styled.div`
   }
 
   &.mindmap-node-selected {
-    border: 1px solid #3182ce;
-  }
-
-  .node-operation-bar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 5px;
-    font-size: 12px;
-    color: #a0a0a0;
-    height: 15px;
-    line-height: 15px;
-
-    .operations,
-    .find-in-chat {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      cursor: pointer;
-    }
-
-    .operation-buttons-bar {
-      button {
-        padding: 5px 7px;
-        font-size: 12px;
-        transition: all 0.1s ease-in-out;
-        :hover {
-          background-color: #f5f5f5;
-        }
-        border-right: 1px solid #e5e5e8;
-
-        :last-child {
-          border-right: none;
-        }
-      }
-    }
+    border: 1px solid #0042d9;
   }
 
   .message {
@@ -155,7 +110,24 @@ interface MindmapNodeProps {
   selected: boolean;
 }
 
+interface IPalette {
+  id: string;
+  color: string;
+  selected: boolean;
+}
+
 const MindmapNode = ({ id, data, selected }: MindmapNodeProps) => {
+  const [nodePalette, setNodePalette] = useState<IPalette[]>([
+    { id: '#ffffff', color: '#ffffff', selected: true },
+    { id: '#fcf1a6', color: '#fcf1a6', selected: false },
+    { id: '#f6cac7', color: '#f6cac7', selected: false },
+    { id: '#fae1f1', color: '#fae1f1', selected: false },
+    { id: '#c7dbed', color: '#c7dbed', selected: false },
+    { id: '#e6eafd', color: '#e6eafd', selected: false },
+    { id: '#d3e1a0', color: '#d3e1a0', selected: false },
+    { id: '#a1c698', color: '#a1c698', selected: false },
+  ]);
+  const [nodeBgColor, setNodeBgColor] = useState('#ffffff');
   const [showUserMessageExpandIcon, setShowUserMessageExpandIcon] =
     useState(false);
   const [showAiMessageExpandIcon, setShowAiMessageExpandIcon] = useState(false);
@@ -163,13 +135,28 @@ const MindmapNode = ({ id, data, selected }: MindmapNodeProps) => {
   const [aiMessageExpanded, setAiMessageExpanded] = useState(false);
   const userMessageRef = useRef(null);
   const aiMessageRef = useRef(null);
+  const [isTagReadMode, setTagReadMode] = React.useState(true);
   const { isOver, setNodeRef } = useDroppable({
     id: 'mindmap-node-' + data.conversationPairId,
     data: { data },
   });
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   //TODO: remove this
   const nodeRef = useRef(null);
+
+  const updateColor = (id: string) => {
+    setNodePalette((prevPalette: IPalette[]) => {
+      const newPalette = prevPalette.map((obj: IPalette) => {
+        if (obj.id === id) {
+          setNodeBgColor(obj.color);
+          return { ...obj, selected: true };
+        }
+        return { ...obj, selected: false };
+      });
+      return newPalette;
+    });
+  };
 
   // useEffect(() => {
   //   if (nodeRef.current) {
@@ -197,36 +184,16 @@ const MindmapNode = ({ id, data, selected }: MindmapNodeProps) => {
     <NodeContainer
       ref={setNodeRef}
       className={selected ? 'mindmap-node-selected' : ''}
+      style={{ backgroundColor: nodeBgColor }}
     >
-      <div className="node-operation-bar">
-        <div>
-          <Popover placement="top-start">
-            <PopoverTrigger>
-              <Icon className="operations" as={IoIosMore} w={4} h={4} />
-            </PopoverTrigger>
-            <PopoverContent
-              className="relative bottom-8"
-              width={'auto'}
-              overflow={'hidden'}
-            >
-              <PopoverArrow />
-              {/* <PopoverCloseButton /> */}
-              {/* <PopoverHeader>Confirmation!</PopoverHeader> */}
-              <PopoverBody padding="0">
-                <div className="h-auto operation-buttons-bar text-gray-950">
-                  <button>Colors</button>
-                  <button>Add Tags</button>
-                  <button>Add Notes</button>
-                  <button className="text-red-600">Delete</button>
-                </div>
-              </PopoverBody>
-            </PopoverContent>
-          </Popover>
-        </div>
-        <div>
-          <Icon className="find-in-chat" as={MdOutlineReadMore} w={4} h={4} />
-        </div>
-      </div>
+      {/* Node Operations Bar */}
+      <MindmapNodeOpBar
+        nodePalette={nodePalette}
+        updateColor={updateColor}
+        setTagReadMode={setTagReadMode}
+      />
+
+      {/* Node Content */}
       <div ref={nodeRef}>
         <div
           className={`message user-message ${
@@ -287,6 +254,12 @@ const MindmapNode = ({ id, data, selected }: MindmapNodeProps) => {
             />
           )}
         </div>
+
+        {/* Node Footer */}
+        <MindmapNodeFooter
+          isTagReadMode={isTagReadMode}
+          setTagReadMode={setTagReadMode}
+        />
         <Handle
           type="target"
           position={Position.Left}

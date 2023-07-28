@@ -7,7 +7,7 @@ const Wrapper = styled.div`
     margin-bottom: 3px;
     .dot {
       display: inline-block;
-      background-color: #777777;
+      background-color: white;
       height: 3px;
       width: 3px;
       border-radius: 2px;

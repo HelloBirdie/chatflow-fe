@@ -13,6 +13,8 @@ import ReactFlow, {
   Controls,
   Background,
   ControlButton,
+  MarkerType,
+  ConnectionLineType,
 } from 'reactflow';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -44,7 +46,25 @@ const MindmapCanvas = () => {
   const nodeTypes = useMemo(() => ({ mindmapNode: MindmapNode }), []);
 
   const onConnect = useCallback(
-    (params: any) => setEdges((eds) => addEdge(params, eds)),
+    // (params: any) => setEdges((eds) => addEdge(params, eds)),
+    (params: any) =>
+      setEdges((eds) =>
+        addEdge(
+          {
+            ...params,
+            type: 'smoothstep',
+            markerEnd: {
+              type: MarkerType.ArrowClosed,
+              width: 13,
+              height: 13,
+            },
+            style: {
+              strokeWidth: 1.4,
+            },
+          },
+          eds,
+        ),
+      ),
     [setEdges],
   );
 
@@ -80,6 +100,8 @@ const MindmapCanvas = () => {
         edges={edges}
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
+        connectionLineType={ConnectionLineType.SmoothStep}
+        connectionLineStyle={{ strokeWidth: '1.4' }}
         onConnect={onConnect}
         proOptions={proOptions}
         nodeTypes={nodeTypes}

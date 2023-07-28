@@ -1,6 +1,7 @@
 import { IEdge } from '@/interfaces/edge';
 import { INode } from '@/interfaces/node';
 import dagre from '@dagrejs/dagre';
+import { MarkerType } from 'reactflow';
 
 export const generateEdgesFromNodes = (nodes: INode[] | []): IEdge[] => {
   const edges: IEdge[] = [];
@@ -11,6 +12,14 @@ export const generateEdgesFromNodes = (nodes: INode[] | []): IEdge[] => {
         source: node.parentNode,
         target: node.id,
         type: 'smoothstep',
+        markerEnd: {
+          type: MarkerType.ArrowClosed,
+          width: 13,
+          height: 13,
+        },
+        style: {
+          strokeWidth: 1.4,
+        },
       });
     }
   });

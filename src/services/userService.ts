@@ -12,3 +12,8 @@ export const emailLogin = async (
 export const emailSignup = async (
   user: IUserEmailSignup,
 ): Promise<AxiosResponse<undefined>> => apiClient.post('/users/signup', user);
+
+export const googleLogin = async (
+  accessToken: string,
+): Promise<AxiosResponse<undefined>> =>
+  apiClient.post('/auth/login/google', { accessToken });

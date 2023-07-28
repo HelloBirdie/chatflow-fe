@@ -113,13 +113,18 @@ import {
   Button,
   InputGroup,
   InputRightElement,
+  useToast,
+  Spinner,
 } from '@chakra-ui/react';
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 import { BsGithub } from 'react-icons/bs';
 import { FcGoogle } from 'react-icons/fc';
 import clsx from 'clsx';
 import { useGoogleLogin } from '@react-oauth/google';
-import { emailLogin } from '@/services/userService';
+import {
+  emailLogin,
+  googleLogin as googleLoginService,
+} from '@/services/userService';
 import { IUserEmailLogin } from '@/interfaces/user';
 import { set } from 'lodash';
 import { AxiosError } from 'axios';
@@ -136,6 +141,10 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showLoading, setShowLoading] = useState(false);
   const [authError, setAuthError] = useState({ message: '', isError: false });
+  const [googleLoginLoading, setGoogleLoginLoading] = useState(false);
+
+  const toast = useToast();
+
   // const initialValues = {
   //   email: '',
   //   password: '',
@@ -207,7 +216,39 @@ const Login = () => {
   };
 
   const googleLogin = useGoogleLogin({
-    onSuccess: (tokenResponse) => console.log(tokenResponse),
+    onSuccess: async (tokenResponse) => {
+      setGoogleLoginLoading(true);
+      const accessToken = tokenResponse.access_token;
+
+      console.log(tokenResponse.access_token);
+
+      try {
+        const response = await googleLoginService(accessToken);
+
+        console.log(response);
+
+        if (response.status === 200) {
+          const authnHeader = response.headers.authorization;
+          const token = authnHeader?.split(' ')[1];
+
+          // store the token in local storage
+          localStorage.setItem('token', token!);
+
+          window.location.href = '/';
+        }
+      } catch (error) {
+        console.log(error);
+
+        toast({
+          title: 'Failed to login with Google.',
+          status: 'error',
+          isClosable: true,
+          position: 'top',
+        });
+      } finally {
+        setGoogleLoginLoading(false);
+      }
+    },
   });
 
   return (
@@ -343,8 +384,18 @@ const Login = () => {
             googleLogin();
           }}
         >
-          <Icon as={FcGoogle} className="mr-8" boxSize={10} />
-          <span className="mr-6 text-xl">Continue with Google</span>
+          {googleLoginLoading ? (
+            <Spinner marginRight={'20px'} color="gray" />
+          ) : (
+            <Icon as={FcGoogle} className="mr-8" boxSize={10} />
+          )}
+          <span
+            className={`mr-6 text-xl ${
+              googleLoginLoading ? 'text-gray-500' : ''
+            }`}
+          >
+            Continue with Google
+          </span>
         </button>
       </div>
     </div>

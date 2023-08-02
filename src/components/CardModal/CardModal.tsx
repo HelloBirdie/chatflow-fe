@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import { useState } from 'react';
 import moment from 'moment';
-import { ICard } from '@/interfaces/card';
+import { ICardAdd } from '@/interfaces/card';
 import {
   Modal,
   ModalOverlay,
@@ -24,36 +24,39 @@ import {
 import EmojiPicker from 'emoji-picker-react';
 import { Emoji } from 'emoji-picker-react';
 import { nanoid } from '@reduxjs/toolkit';
+import { addMindmap } from '@/services/mindmapService';
 
 interface Props {
   title: string;
   isOpen: boolean;
   onClose: () => void;
-  id?: string;
-  name?: string;
-  icon?: string;
+  onSubmit: Function;
+  // id?: string;
+  // name?: string;
+  // iconCode?: string;
 }
 
 const CardModal = ({
-  title,
+  title = 'Create a mindmap',
   isOpen,
   onClose,
-  id = nanoid(),
-  name = 'My mindmap',
-  icon = '1f4a1',
-}: Props) => {
+  onSubmit,
+}: // id = nanoid(),
+// name = 'My mindmap',
+// iconCode = '1f4a1',
+Props) => {
   const initialRef = React.useRef(null);
-  const [formData, setFormData] = useState<ICard>({
-    id: id,
-    name: name,
-    icon: icon,
-    date: moment().unix(),
+  const [formData, setFormData] = useState<ICardAdd>({
+    name: 'My mindmap',
+    iconCode: '1f4a1',
+    aiModelId: 1,
+    // date: moment().unix(),
   });
 
   const isError = formData.name === '';
 
   const onEmojiClick = (emojiObject: any) => {
-    setFormData((prevData) => ({ ...prevData, icon: emojiObject.unified }));
+    setFormData((prevData) => ({ ...prevData, iconCode: emojiObject.unified }));
   };
 
   const handleFocus = (e: any) => {
@@ -66,10 +69,19 @@ const CardModal = ({
   const handleClose = () => {
     setFormData((prevData) => ({
       ...prevData,
-      name: name,
-      icon: icon,
+      name: 'My mindmap',
+      iconCode: '1f4a1',
     }));
     onClose();
+  };
+
+  const handleSubmit = async () => {
+    try {
+      await onSubmit(formData);
+      handleClose();
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (
@@ -98,7 +110,7 @@ const CardModal = ({
                     borderRadius: '0.375rem',
                   }}
                 >
-                  <Emoji unified={formData.icon} size={36}></Emoji>
+                  <Emoji unified={formData.iconCode} size={36}></Emoji>
                 </Center>
               </PopoverTrigger>
               <PopoverContent>
@@ -137,6 +149,7 @@ const CardModal = ({
             backgroundColor="#0042D9"
             _hover={{ bg: '#0036B4', cursor: 'pointer' }}
             _active={{ bg: '#002782' }}
+            onClick={handleSubmit}
           >
             Save
           </Button>

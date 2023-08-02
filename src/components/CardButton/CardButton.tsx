@@ -3,8 +3,9 @@ import { useDisclosure } from '@chakra-ui/react';
 import { Card, VStack, Text } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
 import CardModal from '../CardModal/CardModal';
+import { ICard } from '@/interfaces/card';
 
-const CardButton = () => {
+const CardButton = ({ onSubmit }: { onSubmit: Function }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <Card
@@ -21,7 +22,7 @@ const CardButton = () => {
         <AddIcon boxSize={6} />
         <Text fontSize="lg">Create a mindmap</Text>
       </VStack>
-      <CardModal title="Create a mindmap" isOpen={isOpen} onClose={onClose} />
+      <CardModal title="Create a mindmap" isOpen={isOpen} onClose={onClose} onSubmit={onSubmit}/>
     </Card>
   );
 };

@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import { addMindmap, getAllMindmaps } from '@/services/mindmapService';
 import {
   Tabs,
   TabList,
@@ -12,69 +13,45 @@ import {
 } from '@chakra-ui/react';
 import MindmapCard from '../MindmapCard/MindmapCard';
 import CardButton from '../CardButton/CardButton';
-import { ICard } from '@/interfaces/card';
+import { ICard, ICardAdd } from '@/interfaces/card';
 
 const HomeWorkspace = () => {
-  // TODO: call API to obtain formData
-  const [formData, setFormData] = useState<ICard[]>([
-    {
-      id: '2',
-      name: 'Charlotte Shit Exhibition',
-      icon: '1f4a9',
-      date: 953078400,
-    },
-    {
-      id: '3',
-      name: 'Jack Featured Gay Porns',
-      icon: '1f44d',
-      date: 956102400,
-    },
-    {
-      id: '4',
-      name: 'Sky AI Research Notes',
-      icon: '1f979',
-      date: 958089600,
-    },
-    {
-      id: '1',
-      name: 'Adeline Hair Ties Show',
-      icon: '1f496',
-      date: 945475200,
-    },
-    {
-      id: '5',
-      name: 'Lin Haidilao Recipes',
-      icon: '1f958',
-      date: 959385600,
-    },
-    {
-      id: '6',
-      name: 'Lin Haidilao Recipes',
-      icon: '1f958',
-      date: 955385600,
-    },
-    {
-      id: '7',
-      name: 'Lin Haidilao Recipes',
-      icon: '1f958',
-      date: 919385600,
-    },
-    {
-      id: '8',
-      name: 'Lin Haidilao Recipes',
-      icon: '1f958',
-      date: 959345600,
-    },
-    {
-      id: '9',
-      name: 'Lin Haidilao Recipes',
-      icon: '1f958',
-      date: 929385600,
-    },
-  ]);
-  const [list, setList] = useState<ICard[]>([...formData]);
-  const [tabIndex, setTabIndex] = useState(0);
+  const [mindmaps, setMindmaps] = useState<ICard[]>();
+  const [sortBy, setSortBy] = useState('date');
   const [query, setQuery] = useState<string>('');
+
+  useEffect(() => {
+    getMindmaps();
+  }, []);
+
+  const getMindmaps = async () => {
+    try {
+      const response = await getAllMindmaps();
+      console.log(response.data);
+      setMindmaps(response.data);
+      if (response.data) sortMindmaps(response.data, sortBy);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const sortMindmaps = (fetchedData: ICard[], sortKey: string) => {
+    if (!fetchedData) return;
+    const sortedMindmaps = fetchedData.sort((a, b) => {
+      if (sortKey === 'date') {
+        console.log('date');
+        return (
+          new Date(b.updateTime).getTime() - new Date(a.updateTime).getTime()
+        );
+      } else if (sortKey === 'name') {
+        return a.name.localeCompare(b.name);
+      }
+      return 0;
+    });
+
+    setMindmaps(sortedMindmaps);
+    setSortBy(sortKey);
+  };
 
   const updateCards = debounce();
   function debounce() {
@@ -88,19 +65,22 @@ const HomeWorkspace = () => {
   }
 
   const handleTabsChange = (index: number) => {
-    setTabIndex(index);
-    index === 0 &&
-      setList(
-        list.sort((a, b) => {
-          return b.date - a.date;
-        }),
-      );
-    index === 1 &&
-      setList(
-        list.sort((a, b) => {
-          return a.name.localeCompare(b.name);
-        }),
-      );
+    if (!mindmaps) return;
+    if (index === 0) {
+      sortMindmaps(mindmaps, 'date');
+    } else if (index === 1) {
+      sortMindmaps(mindmaps, 'name');
+    }
+  };
+
+  const onSubmit = async (formData: ICardAdd) => {
+    try {
+      const response = await addMindmap(formData);
+      console.log('Response:::::', response);
+      getMindmaps();
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (
@@ -140,33 +120,35 @@ const HomeWorkspace = () => {
             {/* Date Panel */}
             <TabPanel p="0">
               <Wrap spacing="1.5rem">
-                <CardButton />
-                {list.map((item) => {
-                  if (
-                    query === '' ||
-                    item.name.toLowerCase().includes(query.toLowerCase())
-                  ) {
-                    return (
-                      <MindmapCard key={item.id} item={item}></MindmapCard>
-                    );
-                  }
-                })}
+                <CardButton onSubmit={onSubmit} />
+                {mindmaps &&
+                  mindmaps.map((item) => {
+                    if (
+                      query === '' ||
+                      item.name.toLowerCase().includes(query.toLowerCase())
+                    ) {
+                      return (
+                        <MindmapCard key={item.id} item={item}></MindmapCard>
+                      );
+                    }
+                  })}
               </Wrap>
             </TabPanel>
             {/* Name Panel */}
             <TabPanel p="0">
               <Wrap spacing="1.5rem">
-                <CardButton />
-                {list.map((item) => {
-                  if (
-                    query === '' ||
-                    item.name.toLowerCase().includes(query.toLowerCase())
-                  ) {
-                    return (
-                      <MindmapCard key={item.id} item={item}></MindmapCard>
-                    );
-                  }
-                })}
+                <CardButton onSubmit={onSubmit} />
+                {mindmaps &&
+                  mindmaps.map((item) => {
+                    if (
+                      query === '' ||
+                      item.name.toLowerCase().includes(query.toLowerCase())
+                    ) {
+                      return (
+                        <MindmapCard key={item.id} item={item}></MindmapCard>
+                      );
+                    }
+                  })}
               </Wrap>
             </TabPanel>
           </TabPanels>

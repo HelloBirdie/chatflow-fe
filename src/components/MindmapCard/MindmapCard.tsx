@@ -28,8 +28,8 @@ const MindmapCard = ({ item }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const dateObject = new Date(item.updateTime);
   const year = dateObject.getUTCFullYear();
-  const month = String(dateObject.getUTCMonth() + 1).padStart(2, "0");
-  const day = String(dateObject.getUTCDate()).padStart(2, "0");
+  const month = String(dateObject.getUTCMonth() + 1).padStart(2, '0');
+  const day = String(dateObject.getUTCDate()).padStart(2, '0');
   const formattedDate = `${year}-${month}-${day}`;
 
   const handleEdit = () => {
@@ -38,7 +38,21 @@ const MindmapCard = ({ item }: Props) => {
   const handleDuplicate = () => {};
   const handleDelete = () => {};
   return (
-    <Card variant="outline" w="225px" h="270px">
+    <Card
+      variant="outline"
+      w="225px"
+      h="270px"
+      _hover={{
+        background: '#f4f4f5',
+        cursor: 'pointer',
+      }}
+      _active={{
+        background: '#e5e5e8',
+      }}
+      onClick={() => {
+        window.location.href = '/mindmap';
+      }}
+    >
       <CardHeader>
         <HStack justify="space-between">
           <IconButton

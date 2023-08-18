@@ -24,46 +24,60 @@ const initialNodes: INode[] = [
     parentNode: null,
     data: {
       conversationPairId: 1,
-      userMessage: 'Hello',
-      aiMessage: 'Hi',
+      userMessage: 'What is thread in Java?',
+      aiMessage: 'In Java, a thread is a separate unit of execution within a process. Threads allow for concurrent execution of tasks, improving efficiency.',
       isParent: true,
     },
   },
   {
     id: '12',
     type: 'mindmapNode',
-    position: { x: 0, y: 100 },
+    position: { x: 500, y: -400 },
     parentNode: '11',
     data: {
       conversationPairId: 2,
-      userMessage: 'Hello',
-      aiMessage: 'Hi',
+      userMessage: 'How to create threads?',
+      aiMessage: '1. Extend Thread Class. 2. Implement Runnable.',
       isParent: false,
     },
   },
   {
     id: '13',
     type: 'mindmapNode',
-    position: { x: 100, y: 100 },
+    position: { x: 600, y: -250 },
     parentNode: '11',
     data: {
       conversationPairId: 3,
-      userMessage: 'Hello',
-      aiMessage: 'Hi',
+      userMessage: 'What is multitasking in Java thread?',
+      aiMessage: 'Multitasking in Java threads refers to the ability of the Java runtime to manage and execute multiple threads concurrently. ',
       isParent: false,
     },
   },
   {
     id: '14',
     type: 'mindmapNode',
-    position: { x: 200, y: 100 },
+    position: { x: 550, y: 50 },
     parentNode: '11',
     data: {
       conversationPairId: 4,
       userMessage:
-        'There are many benefits to a joint design and development system. Not only does it bring benefits to the design team, but it also brings benefits to engineering teams. It makes sure that our experiences have a consistent look and feel, not just in our design specs, but in production',
+        'What is synchronization in Java thread?',
       aiMessage:
-        'There are many benefits to a joint design and development system. Not only does it bring benefits to the design team, but it also brings benefits to engineering teams. It makes sure that our experiences have a consistent look and feel, not just in our design specs, but in production. There are many benefits to a joint design and development system. Not only does it bring benefits to the design team, but it also brings benefits to engineering teams. It makes sure that our experiences have a consistent look and feel, not just in our design specs, but in production. There are many benefits to a joint design and development system. Not only does it bring benefits to the design team, but it also brings benefits to engineering teams. It makes sure that our experiences have a consistent look and feel, not just in our design specs, but in production',
+        'Synchronization in Java threads refers to the mechanism used to control access to shared resources among multiple threads to prevent data inconsistency and conflicts. ',
+      isParent: false,
+    },
+  },
+  {
+    id: '15',
+    type: 'mindmapNode',
+    position: { x: 300, y: 250 },
+    parentNode: '11',
+    data: {
+      conversationPairId: 5,
+      userMessage:
+        'What is thread transition?',
+      aiMessage:
+        'Thread transition, in the context of Java threads, refers to the various states that a thread can go through during its lifecycle. Threads can transition between different states as they are created, run, and complete their tasks. ',
       isParent: false,
     },
   },

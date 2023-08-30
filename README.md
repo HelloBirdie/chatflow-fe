@@ -1,3 +1,3 @@
 # Demo
 
-![Project image](./public/demo.gif)
+![Project image](public/demo.gif)

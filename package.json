@@ -5,6 +5,7 @@
   "dependencies": {
     "@chakra-ui/icons": "^2.0.19",
     "@chakra-ui/react": "^2.6.0",
+    "@chatscope/chat-ui-kit-styles": "^1.4.0",
     "@dagrejs/dagre": "^1.0.0",
     "@dnd-kit/core": "^6.0.8",
     "@dnd-kit/modifiers": "^6.0.1",
@@ -27,8 +28,10 @@
     "clsx": "^1.2.1",
     "emoji-picker-react": "^4.4.9",
     "framer-motion": "^10.12.7",
+    "install": "^0.13.0",
     "lodash": "^4.17.21",
     "moment": "^2.29.4",
+    "npm": "^9.8.1",
     "prettier": "^2.8.8",
     "react": "^18.2.0",
     "react-chat-widget": "^3.1.4",

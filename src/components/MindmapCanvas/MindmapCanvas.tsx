@@ -47,7 +47,7 @@ const MindmapCanvas = () => {
 
   const onConnect = useCallback(
     // (params: any) => setEdges((eds) => addEdge(params, eds)),
-    (params: any) =>
+    (params: any) => {
       setEdges((eds) =>
         addEdge(
           {
@@ -64,7 +64,9 @@ const MindmapCanvas = () => {
           },
           eds,
         ),
-      ),
+      );
+    },
+
     [setEdges],
   );
 
@@ -137,4 +139,4 @@ const MindmapCanvas = () => {
   );
 };
 
-export default MindmapCanvas;
+export default React.memo(MindmapCanvas);

@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from '@/hooks';
+import { fetchUser } from '@/redux/reducers/userReducers';
 import logo from '@/assets/images/chatflow-logo-round-blue-bg.png';
 import {
   Menu,
@@ -13,6 +15,14 @@ import { SettingsIcon, HamburgerIcon } from '@chakra-ui/icons';
 import { AiOutlinePlus, AiOutlineLogout } from 'react-icons/ai';
 
 const HomeHeaderBar = () => {
+  const dispatch = useAppDispatch();
+  const userInfo = useAppSelector((state) => state.user.profile);
+  const { username } = userInfo;
+
+  useEffect(() => {
+    dispatch(fetchUser());
+  }, [dispatch]);
+
   return (
     <div
       style={{
@@ -61,7 +71,7 @@ const HomeHeaderBar = () => {
             >
               <HStack>
                 {/* Edit: pass the username */}
-                <p>Charlotte's Workspace</p>
+                <p>{username}'s Workspace</p>
                 {/* Edit: pass the identity */}
                 <span
                   style={{

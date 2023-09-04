@@ -26,7 +26,11 @@ interface Props {
 
 const MindmapCard = ({ item }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const dateTimeString = moment.unix(item.date).format('YYYY-MM-DD');
+  const dateObject = new Date(item.updateTime);
+  const year = dateObject.getUTCFullYear();
+  const month = String(dateObject.getUTCMonth() + 1).padStart(2, '0');
+  const day = String(dateObject.getUTCDate()).padStart(2, '0');
+  const formattedDate = `${year}-${month}-${day}`;
 
   const handleEdit = () => {
     onOpen();
@@ -34,7 +38,21 @@ const MindmapCard = ({ item }: Props) => {
   const handleDuplicate = () => {};
   const handleDelete = () => {};
   return (
-    <Card variant="outline" w="225px" h="270px">
+    <Card
+      variant="outline"
+      w="225px"
+      h="270px"
+      _hover={{
+        background: '#f4f4f5',
+        cursor: 'pointer',
+      }}
+      _active={{
+        background: '#e5e5e8',
+      }}
+      onClick={() => {
+        window.location.href = '/mindmap';
+      }}
+    >
       <CardHeader>
         <HStack justify="space-between">
           <IconButton
@@ -64,24 +82,24 @@ const MindmapCard = ({ item }: Props) => {
         </HStack>
       </CardHeader>
       <CardBody gap="4" className="flex flex-col justify-center items-center">
-        <Emoji unified={item.icon} size={36}></Emoji>
+        <Emoji unified={item.iconCode} size={36}></Emoji>
         <Text fontSize="md" align="center">
           {item.name}
         </Text>
       </CardBody>
       <CardFooter className="justify-center items-center">
         <Text fontSize="xs" color="gray.500" align="center">
-          {dateTimeString}
+          {formattedDate}
         </Text>
       </CardFooter>
-      <CardModal
+      {/* <CardModal
         title="Edit the mindmap"
         isOpen={isOpen}
         onClose={onClose}
-        id={item.id}
+        // id={item.id}
         name={item.name}
-        icon={item.icon}
-      />
+        icon={item.iconCode}
+      /> */}
     </Card>
   );
 };

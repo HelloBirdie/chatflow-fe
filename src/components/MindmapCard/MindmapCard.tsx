@@ -33,6 +33,7 @@ const MindmapCard = ({ item }: Props) => {
   const formattedDate = `${year}-${month}-${day}`;
 
   const handleEdit = () => {
+    console.log('click');
     onOpen();
   };
   const handleDuplicate = () => {};
@@ -43,7 +44,7 @@ const MindmapCard = ({ item }: Props) => {
       w="225px"
       h="270px"
       _hover={{
-        background: '#f4f4f5',
+        background: '#f9f9f9',
         cursor: 'pointer',
       }}
       _active={{
@@ -55,14 +56,14 @@ const MindmapCard = ({ item }: Props) => {
     >
       <CardHeader>
         <HStack justify="space-between">
-          <IconButton
+          {/* <IconButton
             variant="unstyled"
             aria-label="Drag card"
             icon={<DragHandleIcon />}
             color="gray.800"
             size="sm"
             style={{ transform: 'rotate(90deg)' }}
-          ></IconButton>
+          ></IconButton> */}
           <Menu isLazy autoSelect={false}>
             <MenuButton
               variant="outline"
@@ -72,8 +73,15 @@ const MindmapCard = ({ item }: Props) => {
               color="gray.800"
               size="sm"
               style={{ transform: 'rotate(90deg)' }}
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
             />
-            <MenuList>
+            <MenuList
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
+            >
               <MenuItem onClick={handleEdit}>Edit</MenuItem>
               <MenuItem onClick={handleDuplicate}>Duplicate</MenuItem>
               <MenuItem onClick={handleDelete}>Delete</MenuItem>

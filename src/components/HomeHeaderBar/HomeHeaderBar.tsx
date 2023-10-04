@@ -36,8 +36,8 @@ const HomeHeaderBar = () => {
       }}
     >
       <HStack
-        className="h-16 w-screen justify-between flex-1"
-        style={{ maxWidth: '1000px' }}
+        className="h-16 w-screen justify-between flex-1 "
+        style={{ maxWidth: '1100px' }}
       >
         {/* Left Part */}
         <HStack>
@@ -45,6 +45,10 @@ const HomeHeaderBar = () => {
             className="w-[35px] h-[35px] rounded-full shadow-2xl mr-2"
             src={logo}
             alt="chat flow logo"
+            style={{ cursor: 'pointer' }}
+            onClick={() => {
+              window.location.href = '/';
+            }}
           />
           <h1 className="font-black text-lg">ChatFlow</h1>
         </HStack>

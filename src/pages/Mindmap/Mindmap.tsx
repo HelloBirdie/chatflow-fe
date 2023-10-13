@@ -15,6 +15,7 @@ import { setNodes, addNode } from '@/redux/actions/nodeActions';
 import { INode } from '@/interfaces/node';
 import { generateEdgesFromNodes } from '@/utils/mindmapUtils';
 import { setEdges } from '@/redux/actions/edgeActions';
+import ChatBoxContextProvider from '@/components/ChatBox/ChatBoxContextProvider';
 
 const initialNodes: INode[] = [
   {
@@ -25,7 +26,8 @@ const initialNodes: INode[] = [
     data: {
       conversationPairId: 1,
       userMessage: 'What is thread in Java?',
-      aiMessage: 'In Java, a thread is a separate unit of execution within a process. Threads allow for concurrent execution of tasks, improving efficiency.',
+      aiMessage:
+        'In Java, a thread is a separate unit of execution within a process. Threads allow for concurrent execution of tasks, improving efficiency.',
       isParent: true,
     },
   },
@@ -49,7 +51,8 @@ const initialNodes: INode[] = [
     data: {
       conversationPairId: 3,
       userMessage: 'What is multitasking in Java thread?',
-      aiMessage: 'Multitasking in Java threads refers to the ability of the Java runtime to manage and execute multiple threads concurrently. ',
+      aiMessage:
+        'Multitasking in Java threads refers to the ability of the Java runtime to manage and execute multiple threads concurrently. ',
       isParent: false,
     },
   },
@@ -60,8 +63,7 @@ const initialNodes: INode[] = [
     parentNode: '11',
     data: {
       conversationPairId: 4,
-      userMessage:
-        'What is synchronization in Java thread?',
+      userMessage: 'What is synchronization in Java thread?',
       aiMessage:
         'Synchronization in Java threads refers to the mechanism used to control access to shared resources among multiple threads to prevent data inconsistency and conflicts. ',
       isParent: false,
@@ -74,8 +76,7 @@ const initialNodes: INode[] = [
     parentNode: '11',
     data: {
       conversationPairId: 5,
-      userMessage:
-        'What is thread transition?',
+      userMessage: 'What is thread transition?',
       aiMessage:
         'Thread transition, in the context of Java threads, refers to the various states that a thread can go through during its lifecycle. Threads can transition between different states as they are created, run, and complete their tasks. ',
       isParent: false,
@@ -139,7 +140,10 @@ const Mindmap = () => {
         </DragOverlay>
         <MindMapHeaderBar />
 
-        <ChatBox ref={chatBoxRef} />
+        <ChatBoxContextProvider>
+          <ChatBox ref={chatBoxRef} />
+        </ChatBoxContextProvider>
+
         <MindmapCanvas />
       </DndContext>
     </div>

@@ -2,28 +2,25 @@ import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { getUserInfo } from '@/services/userService';
 import { IUserProfile } from '@/interfaces/user';
 
-export const fetchUser = createAsyncThunk<IUserProfile, void>(
-  '/users/myInfo',
-  async () => {
-    try {
-      // const response = await getUserInfo();
-      // console.log(response.data);
-      // return response.data;
-      const token = localStorage.getItem('token');
-      const response = await fetch(
-        'http://localhost:8080/api/v1/users/myInfo',
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        },
-      );
-      const data = await response.json();
-      console.log(data);
-      return data;
-    } catch (err) {
-      return thunkAPI.rejectWithValue('Failed to fetch issues.');
-    }
-  },
-);
+export const fetchUser = createAsyncThunk<
+    IUserProfile,
+    void
+>('/users/myInfo', async () => {
+  try {
+    // const response = await getUserInfo();
+    // console.log(response.data);
+    // return response.data;
+    const token = localStorage.getItem('token');
+    const response = await fetch('http://localhost:8080/api/v1/users/myInfo', {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    const data = await response.json();
+    // console.log(data);
+    return data;
+  } catch (err) {
+    // return thunkAPI.rejectWithValue("Failed to fetch issues.");
+  }
+});
 
 interface UserState {
   profile: {

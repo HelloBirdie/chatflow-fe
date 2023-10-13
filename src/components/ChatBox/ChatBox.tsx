@@ -1,4 +1,4 @@
-import React, { forwardRef, useState } from 'react';
+import React, { forwardRef, useState, useContext, useEffect } from 'react';
 import styled from 'styled-components';
 import { HStack, Icon, IconButton } from '@chakra-ui/react';
 
@@ -9,6 +9,7 @@ import ChatMessageContainer from '../ChatMessageContainer/ChatMessageContainer';
 import ChatMessageInput from '../ChatMessageInput/ChatMessageInput';
 import { ChevronDownIcon } from '@chakra-ui/icons';
 import { AiOutlineExpand, AiOutlineMinus } from 'react-icons/ai';
+import ChatBoxContext from './ChatBoxContext';
 
 const ChatBoxToggleButton = styled.button`
   position: absolute;
@@ -115,6 +116,10 @@ const ChatMessageContainerContainer = styled.div`
 
 const ChatBox = forwardRef((props: any, ref: any) => {
   const [showChat, setShowChat] = useState(false);
+  const { conversationPairs, setConversationPairs } =
+    useContext(ChatBoxContext);
+
+  useEffect(() => {}, [conversationPairs]);
 
   return (
     <div>

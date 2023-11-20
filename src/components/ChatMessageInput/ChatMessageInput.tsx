@@ -58,12 +58,38 @@ const ChatMessageInput = () => {
 
     console.log('Message sent:', message);
 
-    const response = await addMessage({
+    const response: any = await addMessage({
       mindmapId: 5,
       isAiMessage: false,
       text: message,
     });
-    if (response && response.status === 200) {
+    if (response.data && response.status === 200) {
+      console.log(response.data);
+      const newConversationPair = {
+        id: response.data.id,
+        userMessage: {
+          id: response.data.userMessage.id,
+          content: response.data.userMessage.text,
+          sender: 'user',
+          timestamp: response.data.userMessage.createdTime,
+        },
+        aiMessage: {
+          id: response.data.aiMessage.id,
+          content: response.data.aiMessage.text,
+          sender: 'ai',
+          timestamp: response.data.aiMessage.createdTime,
+        },
+      };
+      // pop the last conversation pair
+      // get the last conversation pair
+      const lastConversationPair =
+        conversationPairs[conversationPairs.length - 1];
+      if (lastConversationPair.id === -1) {
+        conversationPairs.pop();
+      }
+      // add the new conversation pair
+      setConversationPairs([...conversationPairs, newConversationPair]);
+
       setMessage('');
     } else {
       console.log('Error sending message');

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useRef } from 'react';
 import { Container } from '@chakra-ui/react';
 import ChatMessage from '../ChatMessage/ChatMessage';
 import { mockMessages } from './mockMessages';
@@ -9,6 +9,13 @@ import ChatBoxContext from '../ChatBox/ChatBoxContext';
 const ChatMessageContainer = () => {
   const { conversationPairs, setConversationPairs } =
     useContext(ChatBoxContext);
+
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    // scroll to bottom of the container
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [conversationPairs]);
 
   // React.useEffect(() => {
   //   // fetch the conversation pairs
@@ -31,6 +38,7 @@ const ChatMessageContainer = () => {
           />
         );
       })}
+      <div ref={messagesEndRef} />
     </Container>
   );
 };

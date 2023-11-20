@@ -52,6 +52,10 @@ const ConversationPair = (props: IConversationPairProps) => {
   const [isConversationHovered, setIsConversationHovered] =
     React.useState<boolean>(false);
 
+  const [isWaiting, setIsWaiting] = React.useState<boolean>(
+    userMessage.id === -1,
+  );
+
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
     id: conversationPair.id,
     data: { conversationPair },
@@ -81,10 +85,18 @@ const ConversationPair = (props: IConversationPairProps) => {
         {...listeners}
         {...attributes}
       >
-        <DragGrip />
+        {!isWaiting && <DragGrip />}
       </div>
-      <ChatMessage content={userMessage.content} isUser={true} />
-      <ChatMessage content={aiMessage.content} isUser={false} />
+      <ChatMessage
+        content={userMessage.content}
+        isUser={true}
+        messageId={userMessage.id}
+      />
+      <ChatMessage
+        content={aiMessage.content}
+        isUser={false}
+        messageId={aiMessage.id}
+      />
     </CustomContainer>
   );
 };

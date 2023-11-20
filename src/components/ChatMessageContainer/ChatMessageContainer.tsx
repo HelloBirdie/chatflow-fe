@@ -1,23 +1,28 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Container } from '@chakra-ui/react';
 import ChatMessage from '../ChatMessage/ChatMessage';
 import { mockMessages } from './mockMessages';
 import ConversationPair from '../ConversationPair/ConversationPair';
 import { IConversationPair } from '@/interfaces/conversationPair';
+import ChatBoxContext from '../ChatBox/ChatBoxContext';
 
 const ChatMessageContainer = () => {
-  const [conversationPairs, setConversationPairs] = React.useState<
-    IConversationPair[] | []
-  >([]);
+  const { conversationPairs, setConversationPairs } =
+    useContext(ChatBoxContext);
 
-  React.useEffect(() => {
-    // fetch the conversation pairs
-    const conversationPairs: IConversationPair[] = mockMessages;
-    setConversationPairs(conversationPairs);
-  }, []);
+  // React.useEffect(() => {
+  //   // fetch the conversation pairs
+  //   const conversationPairs: IConversationPair[] = mockMessages;
+  //   setConversationPairs(conversationPairs);
+  // }, []);
 
   return (
-    <Container height={'100%'} overflow={'scroll'} paddingTop={'10px'}>
+    <Container
+      height={'100%'}
+      overflow={'scroll'}
+      paddingTop={'10px'}
+      paddingBottom={'20px'}
+    >
       {conversationPairs.map((conversationPair: IConversationPair) => {
         return (
           <ConversationPair

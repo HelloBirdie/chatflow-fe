@@ -10,6 +10,8 @@ import ChatMessageInput from '../ChatMessageInput/ChatMessageInput';
 import { ChevronDownIcon } from '@chakra-ui/icons';
 import { AiOutlineExpand, AiOutlineMinus } from 'react-icons/ai';
 import ChatBoxContext from './ChatBoxContext';
+import { set } from 'lodash';
+import { mockMessages } from '../ChatMessageContainer/mockMessages';
 
 const ChatBoxToggleButton = styled.button`
   position: absolute;
@@ -118,6 +120,10 @@ const ChatBox = forwardRef((props: any, ref: any) => {
   const [showChat, setShowChat] = useState(false);
   const { conversationPairs, setConversationPairs } =
     useContext(ChatBoxContext);
+
+  useEffect(() => {
+    setConversationPairs(mockMessages);
+  }, []);
 
   useEffect(() => {}, [conversationPairs]);
 

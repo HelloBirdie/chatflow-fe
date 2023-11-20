@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useContext } from 'react';
 import {
   Flex,
   Textarea,
@@ -14,10 +14,17 @@ import { FiSend } from 'react-icons/fi';
 
 import { addMessage } from '@/services/messageService';
 
+import ChatBoxContext from '../ChatBox/ChatBoxContext';
+
 const ChatMessageInput = () => {
   const [message, setMessage] = useState('');
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const toast = useToast();
+  const [isWaitingForResponse, setIsWaitingForResponse] = useState(false);
+
+  // get the context containing the conversation pairs
+  const { conversationPairs, setConversationPairs } =
+    useContext(ChatBoxContext);
 
   const handleMessageChange = (event: any) => {
     setMessage(event.target.value);
@@ -28,8 +35,29 @@ const ChatMessageInput = () => {
     if (!message) {
       return;
     }
+    setIsWaitingForResponse(true);
+
+    // add the message to the conversation pairs
+    const newConversationPair = {
+      id: -1,
+      userMessage: {
+        id: -1,
+        content: message,
+        sender: 'user',
+        timestamp: new Date().toISOString(),
+      },
+      aiMessage: {
+        id: -1,
+        content: 'waiting ...',
+        sender: 'ai',
+        timestamp: new Date().toISOString(),
+      },
+    };
+
+    setConversationPairs([...conversationPairs, newConversationPair]);
 
     console.log('Message sent:', message);
+
     const response = await addMessage({
       mindmapId: 5,
       isAiMessage: false,
@@ -49,6 +77,7 @@ const ChatMessageInput = () => {
         position: 'top',
       });
     }
+    setIsWaitingForResponse(false);
   };
 
   return (
@@ -78,6 +107,7 @@ const ChatMessageInput = () => {
           aria-label="Send message"
           // _hover={{ bg: '#f1f0f1' }}
           isDisabled={!message}
+          isLoading={isWaitingForResponse}
         />
       </InputGroup>
     </Flex>

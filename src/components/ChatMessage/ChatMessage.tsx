@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Spinner } from '@chakra-ui/react';
 
 const MyContainer = styled.div`
   width: 100%;
@@ -31,13 +32,23 @@ const MyContainer = styled.div`
 interface ChatMessageProps {
   content: string;
   isUser: boolean;
+  messageId: number;
 }
 
 const ChatMessage = (props: ChatMessageProps) => {
-  const { content, isUser } = props;
+  const { content, isUser, messageId } = props;
   return (
     <MyContainer className={isUser ? 'user-message' : 'ai-message'}>
-      <p className={isUser ? 'user-message' : 'ai-message'}>{content}</p>
+      {(isUser || messageId !== -1) && (
+        <p className={isUser ? 'user-message' : 'ai-message'}>{content}</p>
+      )}
+      {!isUser && messageId === -1 && (
+        <p className={isUser ? 'user-message' : 'ai-message'}>
+          <span className="flex align-middle">
+            <Spinner color="blue.100" />
+          </span>
+        </p>
+      )}
     </MyContainer>
   );
 };

@@ -56,6 +56,7 @@ const ConversationPair = (props: IConversationPairProps) => {
     id: conversationPair.id,
     data: { conversationPair },
   });
+
   const style = transform
     ? {
         // transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
@@ -88,4 +89,4 @@ const ConversationPair = (props: IConversationPairProps) => {
   );
 };
 
-export default ConversationPair;
+export default React.memo(ConversationPair);

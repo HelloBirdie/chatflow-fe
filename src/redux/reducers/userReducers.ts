@@ -17,10 +17,14 @@ export const fetchUser = createAsyncThunk<IUserProfile, void>(
         },
       );
       const data = await response.json();
-      console.log(data);
+      if (data.error && data.status !== 200) {
+        // redirect to login page
+        window.location.href = '/login';
+      }
       return data;
     } catch (err) {
-      return thunkAPI.rejectWithValue('Failed to fetch issues.');
+      // return thunkAPI.rejectWithValue("Failed to fetch issues.");
+      console.log(err);
     }
   },
 );

@@ -26,6 +26,7 @@ import MindmapNode from '../MindmapNode/MindmapNode';
 import { getLayoutedElements } from '@/utils/mindmapUtils';
 import { setNodes as reduxSetNodes } from '@/redux/actions/nodeActions';
 import { setEdges as reduxSetEdges } from '@/redux/actions/edgeActions';
+import useDeepCompareEffect from '@/hooks/useDeepCompareEffect';
 
 enum BackgroundVariant {
   Lines = 'lines',
@@ -74,13 +75,18 @@ const MindmapCanvas = () => {
     id: 'mindmapCanvas',
   });
 
-  useEffect(() => {
-    if (!isEqual(reduxNodes, nodes)) {
-      setNodes(cloneDeep(reduxNodes));
-    }
-    if (!isEqual(reduxEdges, edges)) {
-      setEdges(cloneDeep(reduxEdges));
-    }
+  // useEffect(() => {
+  //   if (!isEqual(reduxNodes, nodes)) {
+  //     setNodes(cloneDeep(reduxNodes));
+  //   }
+  //   if (!isEqual(reduxEdges, edges)) {
+  //     setEdges(cloneDeep(reduxEdges));
+  //   }
+  // }, [reduxNodes, reduxEdges]);
+
+  useDeepCompareEffect(() => {
+    setNodes(cloneDeep(reduxNodes));
+    setEdges(cloneDeep(reduxEdges));
   }, [reduxNodes, reduxEdges]);
 
   useEffect(() => {

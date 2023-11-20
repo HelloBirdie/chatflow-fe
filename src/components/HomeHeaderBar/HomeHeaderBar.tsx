@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
-import { useAppDispatch, useAppSelector } from '@/hooks';
+import { useAppDispatch } from '@/hooks/useAppDispatch';
+import { useAppSelector } from '@/hooks/useAppSelector';
 import { fetchUser } from '@/redux/reducers/userReducers';
 import logo from '@/assets/images/chatflow-logo-round-blue-bg.png';
 import {

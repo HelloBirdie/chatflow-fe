@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { addMindmap, getAllMindmaps } from '@/services/mindmapService';
 import {
   Tabs,
@@ -10,11 +10,14 @@ import {
   VStack,
   Wrap,
   Input,
+  Button,
 } from '@chakra-ui/react';
 import MindmapCard from '../MindmapCard/MindmapCard';
 import CardButton from '../CardButton/CardButton';
 import { ICard, ICardAdd } from '@/interfaces/card';
 import { m } from 'framer-motion';
+import useDebounce from '@/hooks/useDebounce';
+import { debounce } from 'lodash';
 
 const HomeWorkspace = () => {
   const [mindmaps, setMindmaps] = useState<ICard[]>([
@@ -23,36 +26,37 @@ const HomeWorkspace = () => {
       createTime: '2023-08-18T13:07:01.650008Z',
       iconCode: '1f4d1',
       id: '21',
-      name: "AI6126 - Review",
-      updateTime: '2023-08-18T13:07:01.650008Z'
+      name: 'AI6126 - Review',
+      updateTime: '2023-08-18T13:07:01.650008Z',
     },
     {
       aiModel: 'chatgpt-3',
       createTime: '2023-08-17T13:06:44.166735Z',
       iconCode: '203c-fe0f',
       id: '20',
-      name: "Java Quiz",
-      updateTime: '2023-08-17T13:06:44.166735Z'
+      name: 'Java Quiz',
+      updateTime: '2023-08-17T13:06:44.166735Z',
     },
     {
       aiModel: 'chatgpt-3',
       createTime: '2023-08-16T13:07:01.650008Z',
       iconCode: '1f4a1',
       id: '19',
-      name: "My mindmap",
-      updateTime: '2023-08-16T13:07:01.650008Z'
+      name: 'My mindmap',
+      updateTime: '2023-08-16T13:07:01.650008Z',
     },
     {
       aiModel: 'chatgpt-3',
       createTime: '2023-08-14T13:07:01.650008Z',
       iconCode: '1f4ac',
       id: '18',
-      name: "Tiktok Interview",
-      updateTime: '2023-08-14T13:07:01.650008Z'
-    }
+      name: 'Tiktok Interview',
+      updateTime: '2023-08-14T13:07:01.650008Z',
+    },
   ]);
   const [sortBy, setSortBy] = useState('date');
   const [query, setQuery] = useState<string>('');
+  const searchRef = useRef<HTMLInputElement>(null);
 
   // useEffect(() => {
   //   getMindmaps();
@@ -88,15 +92,13 @@ const HomeWorkspace = () => {
     setSortBy(sortKey);
   };
 
-  const updateCards = debounce();
-  function debounce() {
-    let timeout: ReturnType<typeof setTimeout>;
-    return (text: string) => {
-      clearTimeout(timeout);
-      timeout = setTimeout(() => {
-        setQuery(text);
-      }, 500);
-    };
+  const debouncedQuery = useDebounce(function () {
+    setQuery(searchRef.current?.value as string);
+  }, 2000);
+
+  const handleCardsChange = debouncedQuery;
+  const handleCancelSearch = () => {
+    debouncedQuery.flush()
   }
 
   const handleTabsChange = (index: number) => {
@@ -140,15 +142,15 @@ const HomeWorkspace = () => {
               <Tab _selected={{ bg: 'white', borderRadius: '6px' }}>Name</Tab>
             </TabList>
             <Input
+              ref={searchRef}
               placeholder="Search"
               focusBorderColor="#0042D9"
               position="absolute"
               right="1.8rem"
               w="200px"
-              onChange={(e) => {
-                updateCards(e.target.value);
-              }}
+              onChange={handleCardsChange}
             />
+            <Button onClick={handleCancelSearch}></Button>
           </Center>
           {/* Content */}
           <TabPanels p="2rem 0">

@@ -16,7 +16,9 @@ import { addMessage } from '@/services/messageService';
 
 import ChatBoxContext from '../ChatBox/ChatBoxContext';
 
-const ChatMessageInput = () => {
+const ChatMessageInput = (
+  {setHasNew}: {setHasNew: React.Dispatch<React.SetStateAction<boolean>>}
+) => {
   const [message, setMessage] = useState('');
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const toast = useToast();
@@ -42,13 +44,13 @@ const ChatMessageInput = () => {
       id: -1,
       userMessage: {
         id: -1,
-        content: message,
+        text: message,
         sender: 'user',
         timestamp: new Date().toISOString(),
       },
       aiMessage: {
         id: -1,
-        content: 'waiting ...',
+        text: 'waiting ...',
         sender: 'ai',
         timestamp: new Date().toISOString(),
       },
@@ -69,13 +71,13 @@ const ChatMessageInput = () => {
         id: response.data.id,
         userMessage: {
           id: response.data.userMessage.id,
-          content: response.data.userMessage.text,
+          text: response.data.userMessage.text,
           sender: 'user',
           timestamp: response.data.userMessage.createdTime,
         },
         aiMessage: {
           id: response.data.aiMessage.id,
-          content: response.data.aiMessage.text,
+          text: response.data.aiMessage.text,
           sender: 'ai',
           timestamp: response.data.aiMessage.createdTime,
         },
@@ -91,6 +93,7 @@ const ChatMessageInput = () => {
       setConversationPairs([...conversationPairs, newConversationPair]);
 
       setMessage('');
+      setHasNew(true);
     } else {
       console.log('Error sending message');
 
@@ -131,7 +134,7 @@ const ChatMessageInput = () => {
           icon={<Icon as={FiSend} />}
           onClick={handleSendMessage}
           aria-label="Send message"
-          // _hover={{ bg: '#f1f0f1' }}
+          _hover={{ bg: '#f1f0f1' }}
           isDisabled={!message}
           isLoading={isWaitingForResponse}
         />

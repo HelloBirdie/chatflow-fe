@@ -51,19 +51,19 @@ const MindmapCard = ({ item }: Props) => {
         background: '#e5e5e8',
       }}
       onClick={() => {
-        window.location.href = '/mindmap';
+        window.location.href = `/mindmap/${item.id}`;
       }}
     >
       <CardHeader>
         <HStack justify="space-between">
-          {/* <IconButton
+          <IconButton
             variant="unstyled"
             aria-label="Drag card"
             icon={<DragHandleIcon />}
             color="gray.800"
             size="sm"
             style={{ transform: 'rotate(90deg)' }}
-          ></IconButton> */}
+          ></IconButton>
           <Menu isLazy autoSelect={false}>
             <MenuButton
               variant="outline"
@@ -72,6 +72,12 @@ const MindmapCard = ({ item }: Props) => {
               icon={<GoKebabHorizontal />}
               color="gray.800"
               size="sm"
+              _hover={{
+                background: '#f9f9f9'
+              }}
+              _active={{
+                background: '#e5e5e8',
+              }}
               style={{ transform: 'rotate(90deg)' }}
               onClick={(e) => {
                 e.stopPropagation();

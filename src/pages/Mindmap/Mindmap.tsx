@@ -16,6 +16,7 @@ import { INode } from '@/interfaces/node';
 import { generateEdgesFromNodes } from '@/utils/mindmapUtils';
 import { setEdges } from '@/redux/actions/edgeActions';
 import ChatBoxContextProvider from '@/components/ChatBox/ChatBoxContextProvider';
+import { useParams } from 'react-router-dom';
 
 const initialNodes: INode[] = [
   {
@@ -85,6 +86,7 @@ const initialNodes: INode[] = [
 ];
 
 const Mindmap = () => {
+  const { id } = useParams<{ id: string }>();
   const reactFlowViewport = useViewport();
   const [isDragging, setIsDragging] = useState(false);
   const [draggingConversationPair, setDraggingConversationPair] =

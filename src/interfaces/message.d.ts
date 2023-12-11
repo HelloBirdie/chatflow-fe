@@ -1,14 +1,16 @@
 import { IMesssageAdd } from '@/interfaces/message';
 export interface IMessage {
   id: number;
-  content: string;
-  sender: string;
-  timestamp: string;
+  text: string;
+  senderId: number;
+  aiMessage: boolean;
+  createdTime: string;
+  updatedTime: string;
 }
 
 export interface IMessageSlim {
   id: number;
-  content: string;
+  text: string;
 }
 
 export interface IMesssageAdd {

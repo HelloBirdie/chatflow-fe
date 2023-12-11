@@ -88,12 +88,12 @@ const ConversationPair = (props: IConversationPairProps) => {
         {!isWaiting && <DragGrip />}
       </div>
       <ChatMessage
-        content={userMessage.content}
+        content={userMessage.text}
         isUser={true}
         messageId={userMessage.id}
       />
       <ChatMessage
-        content={aiMessage.content}
+        content={aiMessage.text}
         isUser={false}
         messageId={aiMessage.id}
       />

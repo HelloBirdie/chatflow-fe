@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { addMindmap, getAllMindmaps } from '@/services/mindmapService';
 import {
   Tabs,
@@ -9,70 +9,34 @@ import {
   Center,
   VStack,
   Wrap,
-  Input,
-  Button,
+  Input
 } from '@chakra-ui/react';
 import MindmapCard from '../MindmapCard/MindmapCard';
 import CardButton from '../CardButton/CardButton';
 import { ICard, ICardAdd } from '@/interfaces/card';
 import { m } from 'framer-motion';
 import useDebounce from '@/hooks/useDebounce';
-import { debounce } from 'lodash';
 
 const HomeWorkspace = () => {
-  const [mindmaps, setMindmaps] = useState<ICard[]>([
-    {
-      aiModel: 'chatgpt-3',
-      createTime: '2023-08-18T13:07:01.650008Z',
-      iconCode: '1f4d1',
-      id: '21',
-      name: 'AI6126 - Review',
-      updateTime: '2023-08-18T13:07:01.650008Z',
-    },
-    {
-      aiModel: 'chatgpt-3',
-      createTime: '2023-08-17T13:06:44.166735Z',
-      iconCode: '203c-fe0f',
-      id: '20',
-      name: 'Java Quiz',
-      updateTime: '2023-08-17T13:06:44.166735Z',
-    },
-    {
-      aiModel: 'chatgpt-3',
-      createTime: '2023-08-16T13:07:01.650008Z',
-      iconCode: '1f4a1',
-      id: '19',
-      name: 'My mindmap',
-      updateTime: '2023-08-16T13:07:01.650008Z',
-    },
-    {
-      aiModel: 'chatgpt-3',
-      createTime: '2023-08-14T13:07:01.650008Z',
-      iconCode: '1f4ac',
-      id: '18',
-      name: 'Tiktok Interview',
-      updateTime: '2023-08-14T13:07:01.650008Z',
-    },
-  ]);
+  const [mindmaps, setMindmaps] = useState<ICard[]>();
   const [sortBy, setSortBy] = useState('date');
   const [query, setQuery] = useState<string>('');
   const searchRef = useRef<HTMLInputElement>(null);
 
-  // useEffect(() => {
-  //   getMindmaps();
-  // }, []);
+  useEffect(() => {
+    getMindmaps();
+  }, []);
 
-  // const getMindmaps = async () => {
-  //   try {
-  //     const response = await getAllMindmaps();
-  //     console.log(response.data);
-  //     setMindmaps(response.data);
-  //     if (response.data) sortMindmaps(response.data, sortBy);
-  //     console.log(response.data)
-  //   } catch (err) {
-  //     console.error(err);
-  //   }
-  // };
+  const getMindmaps = async () => {
+    try {
+      const response = await getAllMindmaps();
+      setMindmaps(response.data);
+      if (response.data) sortMindmaps(response.data, sortBy);
+      console.log(response.data)
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   const sortMindmaps = (fetchedData: ICard[], sortKey: string) => {
     if (!fetchedData) return;
@@ -97,9 +61,6 @@ const HomeWorkspace = () => {
   }, 2000);
 
   const handleCardsChange = debouncedQuery;
-  const handleCancelSearch = () => {
-    debouncedQuery.flush()
-  }
 
   const handleTabsChange = (index: number) => {
     if (!mindmaps) return;
@@ -114,7 +75,7 @@ const HomeWorkspace = () => {
     try {
       const response = await addMindmap(formData);
       console.log('Response:::::', response);
-      // getMindmaps();
+      getMindmaps();
     } catch (err) {
       console.error(err);
     }
@@ -150,7 +111,6 @@ const HomeWorkspace = () => {
               w="200px"
               onChange={handleCardsChange}
             />
-            <Button onClick={handleCancelSearch}></Button>
           </Center>
           {/* Content */}
           <TabPanels p="2rem 0">

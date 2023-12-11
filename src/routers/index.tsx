@@ -11,7 +11,7 @@ const routes: RouteObject[] = [
     element: <Home />,
   },
   {
-    path: '/mindmap',
+    path: '/mindmap/:id',
     element: <Mindmap />,
   },
   {

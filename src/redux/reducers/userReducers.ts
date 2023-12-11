@@ -1,5 +1,4 @@
-import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { getUserInfo } from '@/services/userService';
+import {createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { IUserProfile } from '@/interfaces/user';
 
 export const fetchUser = createAsyncThunk<IUserProfile, void>(

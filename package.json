@@ -24,7 +24,7 @@
     "@types/react-router-dom": "^5.3.3",
     "@types/react-tag-input": "^6.6.1",
     "@types/styled-components": "^5.1.26",
-    "axios": "^1.4.0",
+    "axios": "^1.9.0",
     "clsx": "^1.2.1",
     "emoji-picker-react": "^4.4.9",
     "framer-motion": "^10.12.7",
@@ -91,5 +91,11 @@
     "vite": "^4.3.8",
     "vite-plugin-svgr": "^3.2.0",
     "vite-tsconfig-paths": "^4.2.0"
+  },
+  "overrides": {
+    "react-chat-widget": {
+      "react": "^18.2.0",
+      "react-dom": "^18.2.0"
+    }
   }
 }

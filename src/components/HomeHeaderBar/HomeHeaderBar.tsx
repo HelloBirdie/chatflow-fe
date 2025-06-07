@@ -18,7 +18,7 @@ import { AiOutlinePlus, AiOutlineLogout } from 'react-icons/ai';
 const HomeHeaderBar = () => {
   const dispatch = useAppDispatch();
   const userInfo = useAppSelector((state) => state.user.profile);
-  const { username } = userInfo;
+  const username = userInfo?.username || 'Guest';
 
   useEffect(() => {
     dispatch(fetchUser());

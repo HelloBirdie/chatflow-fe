@@ -1,104 +1,3 @@
-// import React, { useState } from 'react';
-
-// import logo from '@/assets/images/chatflow-logo-round-blue-bg.png';
-// import { Link } from 'react-router-dom';
-// import { Icon, FormControl, FormLabel, Input, Button } from '@chakra-ui/react';
-// import { BsGithub } from 'react-icons/bs';
-// import { FcGoogle } from 'react-icons/fc';
-// import clsx from 'clsx';
-
-// const Login = () => {
-//   const [email, setEmail] = useState('');
-//   const [password, setPassword] = useState('');
-
-//   const handleSubmit = (event: any) => {
-//     event.preventDefault();
-//     alert(`Email: ${email} & Password: ${password}`);
-//   };
-//   return (
-//     <div className="w-full h-full flex items-center justify-center">
-//       <div className="flex flex-col items-center">
-//         {/* Logo */}
-//         <img
-//           className="w-[75px] mb-[30px] rounded-full shadow-2xl"
-//           src={logo}
-//           alt="chat flow logo"
-//         />
-
-//         {/* Sign In header */}
-//         <h1 className="font-black text-4xl mb-[20px]">Sign In</h1>
-
-//         <h1 className="text-base">
-//           Don't have an account?{' '}
-//           <Link to="/signup" className="text-blue-700 hover:underline">
-//             Sign up
-//           </Link>{' '}
-//           for free
-//         </h1>
-
-//         {/* Sign In Github */}
-//         <button className="flex flex-row items-center justify-center px-[15px] text-gray rounded w-[340px] h-[73px] mt-[20px] border border-gray-300 font-bold hover:bg-gray-100 active:border-blue-700 transition-colors duration-200">
-//           <Icon as={BsGithub} className="mr-8" boxSize={9} />
-//           <span className="mr-6 text-xl">Continue with Github</span>
-//         </button>
-
-//         {/* Sign In Google */}
-//         <button className="flex flex-row items-center justify-center px-[15px] text-gray rounded w-[340px] h-[73px] mt-[20px] border border-gray-300 font-bold hover:bg-gray-100 active:border-blue-700 transition-colors duration-200">
-//           <Icon as={FcGoogle} className="mr-8" boxSize={10} />
-//           <span className="mr-6 text-xl">Continue with Google</span>
-//         </button>
-
-//         <p
-//           className={clsx(
-//             'flex flex-row items-center mt-6 text-gray-500 w-[340px]',
-//           )}
-//         >
-//           <div className="flex-grow bg bg-gray-300 h-[1px]" />
-//           <span className="flex-grow-0 mx-4 ">Or with your email</span>
-//           <div className="flex-grow bg bg-gray-300 h-[1px]" />
-//         </p>
-
-//         {/* Login Form */}
-//         <div>
-//           <form onSubmit={handleSubmit}>
-//             <FormControl mt={6} isRequired>
-//               <Input
-//                 type="email"
-//                 placeholder="Your email"
-//                 width={80}
-//                 size="lg"
-//                 onChange={(event) => setEmail(event.target.value)}
-//               />
-//             </FormControl>
-
-//             {/* TODO: add show and hide option */}
-//             {/* TODO: add password regex */}
-//             <FormControl mt={4} isRequired>
-//               <Input
-//                 type="password"
-//                 placeholder="Password"
-//                 size="lg"
-//                 onChange={(event) => setPassword(event.target.value)}
-//               />
-//             </FormControl>
-
-//             {/* TODO: add loading effect */}
-//             <Button width="full" mt={4} type="submit">
-//               Sign In
-//             </Button>
-//           </form>
-//         </div>
-
-//         <Link to="/signup" className="text-gray-400 hover:underline mt-3">
-//           Forgot password?
-//         </Link>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Login;
-
 import React, { useEffect, useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -128,30 +27,15 @@ import {
 import { IUserEmailLogin } from '@/interfaces/user';
 import { set } from 'lodash';
 import { AxiosError } from 'axios';
-
-// interface IUserForm {
-//   email: String;
-//   password: String;
-// }
+import axios from 'axios';
 
 const Login = () => {
-  // const [email, setEmail] = useState('');
-  // const [password, setPassword] = useState('');
-  // const [confPwd, setConfPwd] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [showLoading, setShowLoading] = useState(false);
   const [authError, setAuthError] = useState({ message: '', isError: false });
   const [googleLoginLoading, setGoogleLoginLoading] = useState(false);
 
   const toast = useToast();
-
-  // const initialValues = {
-  //   email: '',
-  //   password: '',
-  //   confirmPassword: '',
-  // };
-
-  // const [initialValue, setInitialValue] = useState(initialValues);
 
   const schema = yup
     .object()
@@ -217,37 +101,80 @@ const Login = () => {
 
   const googleLogin = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
-      setGoogleLoginLoading(true);
-      const accessToken = tokenResponse.access_token;
+      console.log('Google login successful, token response:', tokenResponse);
 
-      console.log(tokenResponse.access_token);
-
-      try {
-        const response = await googleLoginService(accessToken);
-
-        console.log(response);
-
-        if (response.status === 200) {
-          const authnHeader = response.headers.authorization;
-          const token = authnHeader?.split(' ')[1];
-
-          // store the token in local storage
-          localStorage.setItem('token', token!);
-
-          window.location.href = '/';
-        }
-      } catch (error) {
-        console.log(error);
-
+      if (!tokenResponse?.access_token) {
+        console.error('No access token in response:', tokenResponse);
         toast({
-          title: 'Failed to login with Google.',
+          title: 'Failed to get Google access token.',
+          description: 'Please try again.',
           status: 'error',
           isClosable: true,
           position: 'top',
         });
+        return;
+      }
+
+      setGoogleLoginLoading(true);
+      const accessToken = tokenResponse.access_token;
+      console.log('Sending access token to backend...');
+
+      try {
+        const response = await googleLoginService(accessToken);
+        console.log('Backend response:', response);
+
+        if (response.status === 200) {
+          const authnHeader = response.headers.authorization;
+          console.log('Auth header received:', authnHeader);
+
+          const token = authnHeader?.split(' ')[1];
+          if (!token) {
+            console.error('No token in auth header');
+            throw new Error('No authentication token received');
+          }
+
+          console.log('Storing token in localStorage...');
+          localStorage.setItem('token', token);
+          window.location.href = '/';
+        } else {
+          console.error('Unexpected response status:', response.status);
+          throw new Error(`Unexpected response status: ${response.status}`);
+        }
+      } catch (error) {
+        console.error('Google login error details:', {
+          error,
+          message: error instanceof Error ? error.message : 'Unknown error',
+          response: axios.isAxiosError(error) ? error.response?.data : null
+        });
+
+        let errorMessage = 'Failed to login with Google.';
+        if (error instanceof Error) {
+          errorMessage = error.message;
+        } else if (axios.isAxiosError(error)) {
+          errorMessage = error.response?.data?.message || error.message;
+        }
+
+        toast({
+          title: 'Login Failed',
+          description: errorMessage,
+          status: 'error',
+          isClosable: true,
+          position: 'top',
+          duration: 5000,
+        });
       } finally {
         setGoogleLoginLoading(false);
       }
+    },
+    onError: (error) => {
+      console.error('Google login initialization error:', error);
+      toast({
+        title: 'Google Login Failed',
+        description: 'Failed to initialize Google login. Please try again.',
+        status: 'error',
+        isClosable: true,
+        position: 'top',
+      });
     },
   });
 
@@ -371,12 +298,6 @@ const Login = () => {
           <div className="flex-grow bg bg-gray-300 h-[1px]" />
         </div>
 
-        {/* Log In Github */}
-        {/* <button className="flex flex-row items-center justify-center px-[15px] text-gray rounded w-[340px] h-[73px] mt-[20px] border border-gray-300 font-bold hover:bg-gray-100 active:border-blue-700 transition-colors duration-200">
-          <Icon as={BsGithub} className="mr-8" boxSize={9} />
-          <span className="mr-6 text-xl">Continue with Github</span>
-        </button> */}
-
         {/* Log In Google */}
         <button
           className="flex flex-row items-center justify-center px-[15px] text-gray rounded w-[340px] h-[73px] mt-[20px] border border-gray-300 font-bold hover:bg-gray-100 active:border-blue-700 transition-colors duration-200"
@@ -390,9 +311,8 @@ const Login = () => {
             <Icon as={FcGoogle} className="mr-8" boxSize={10} />
           )}
           <span
-            className={`mr-6 text-xl ${
-              googleLoginLoading ? 'text-gray-500' : ''
-            }`}
+            className={`mr-6 text-xl ${googleLoginLoading ? 'text-gray-500' : ''
+              }`}
           >
             Continue with Google
           </span>
